@@ -7,7 +7,7 @@
 
 module.exports = {
 
-  identity: 'lesson',
+
 
   attributes: {
     name: {
@@ -20,7 +20,7 @@ module.exports = {
     },
     teacher: {
       collection: 'user',
-      via: 'owner',
+      via: 'teacher',
       index: true,
       required: true,
     },

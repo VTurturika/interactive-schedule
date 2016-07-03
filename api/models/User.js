@@ -7,11 +7,13 @@
 
 module.exports = {
 
-  identity: 'user',
+  autoPK: true,
+  autoCreatedAt: true,
+  autoUpdatedAt: true,
 
   attributes: {
     name: {
-      type: 'string',
+      type: 'text',
       required: true,
     },
     surname: {
@@ -30,10 +32,13 @@ module.exports = {
       type: 'string',
       required: true,
     },
+    teacher: {
+      model: 'lesson',
+    },
     lessons: {
       collection: 'lesson',
       via: 'owner',
-    }
+    },
   }
 };
 

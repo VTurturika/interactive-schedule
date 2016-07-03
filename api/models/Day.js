@@ -6,8 +6,8 @@
  */
 
 module.exports = {
-  
-  identity: 'day',
+
+
 
   attributes: {
     date: {
