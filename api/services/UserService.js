@@ -1,5 +1,7 @@
 "use strict";
 
+// todo: teacher specific functions (подсчет часов и так далее. Описать)
+
 module.exports = {
   getUsers: function (constraints, next) {
     User.find(constraints)
