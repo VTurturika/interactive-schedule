@@ -14,7 +14,7 @@ module.exports = {
    */
   createUser: function (req, res) {
 
-    user = {};
+    let user = {};
 
     user.name = req.body.name || undefined;
     user.surname = req.body.surname || undefined;
@@ -23,7 +23,7 @@ module.exports = {
     user.email = req.body.email || undefined;
     user.lessons = req.body.lessons || undefined;
 
-    if (role === 'admin' && req.body.sudo !== process.env.sudoWord) {
+    if (user.role === 'admin' && req.body.sudo !== process.env.sudoWord) {
       return res.forbidden();
     }
 
@@ -36,7 +36,7 @@ module.exports = {
    * `UserController.destroyUser()`
    */
   destroyUser: function (req, res) {
-    
+
     const sudoWord = req.body.sudo || undefined;
     if (sudoWord !== process.env.sudoWord) {
       return res.forbidden();
