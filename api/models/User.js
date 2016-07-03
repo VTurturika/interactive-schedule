@@ -32,12 +32,9 @@ module.exports = {
       type: 'string',
       required: true,
     },
-    teacher: {
-      model: 'lesson',
-    },
     lessons: {
       collection: 'lesson',
-      via: 'owner',
+      via: 'teacherId',
     },
   }
 };

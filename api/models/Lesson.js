@@ -14,31 +14,32 @@ module.exports = {
       type: 'string',
       required: true,
     },
-    time: {
-      type: 'time',
+    datetime: {
+      type: 'datetime',
       required: true,
     },
-    teacher: {
-      collection: 'user',
-      via: 'teacher',
-      index: true,
-      required: true,
+    building: {
+      type: 'integer',
+      required: 'true',
+      enum: [2, 5, 7, 0],
     },
     classroom: {
       type: 'string',
-    },
-    group: {
-      type: 'integer',
       required: true,
     },
-    owner: {
+    faculty: {
+      type: 'string',
+      required: true,
+      enum: ['fizmat', 'inyaz'],
+
+    },
+    groupId: {
+      type: 'string',
+      required: true,
+    },
+    teacherId: {
       model: 'user',
-      required: true,
     },
-    day: {
-      model: 'day',
-      required: true,
-    }
   }
 };
 

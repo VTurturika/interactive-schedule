@@ -28,7 +28,7 @@ module.exports = {
     }
 
     UserService.createUser(user, user => {
-      return res.json(user);
+      res.json(user);
     });
   },
 
@@ -36,7 +36,7 @@ module.exports = {
    * `UserController.destroyUser()`
    */
   destroyUser: function (req, res) {
-
+    
     const sudoWord = req.body.sudo || undefined;
     if (sudoWord !== process.env.sudoWord) {
       return res.forbidden();
@@ -53,7 +53,7 @@ module.exports = {
    */
   updateUser: function (req, res) {
 
-    let oldUserId = req.body.oldUserId || undefined;
+    let oldId = req.body.oldId || undefined;
     let user = {};
 
     if (req.body.name)
@@ -73,7 +73,7 @@ module.exports = {
     if (req.body.createdAt)
       user.createdAt = req.body.createdAt;
 
-    UserService.updateUser(oldUserId, user, user => {
+    UserService.updateUser(oldId, user, user => {
       res.json(user);
     });
   },
