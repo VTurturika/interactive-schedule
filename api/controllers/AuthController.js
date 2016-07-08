@@ -5,6 +5,7 @@
  * @description :: Server-side logic for managing Auths
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+var passport = require('passport');
 
 module.exports = {
 
@@ -26,8 +27,12 @@ module.exports = {
 		UserService.createUser(user, (user) => {
 			return res.json({
 				user: user,
-				jwtToken: 'JWT ' + JwtChipherService.createToken(user)
+				jwtToken: JwtChipherService.createToken(user)
 			});
 		});
+  },
+
+  login: function (req, res) {
+      return res.json{msg: "login() is not implemented yet!"}
   }
 };

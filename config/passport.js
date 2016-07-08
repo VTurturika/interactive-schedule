@@ -13,16 +13,21 @@ const JWT_STRATEGY_CONFIG = {
 };
 
 passport.use(new JwtStrategy(JWT_STRATEGY_CONFIG, function(jwt_payload, done) {
-  User.findOne({id: jwt_payload.id}, function(err, user) {
-    if (err) {
-      return done(err, false);
-    }
-    if (user) {
-      done(null, user);
-    } else {
-      done(null, false);
-    }
+  //TODO implement check user password
+  UserService.getUsers({email : jwt_payload}, users => {
+      console.log(JSON.stringify(users));
+      done(null,users);
   });
+  // User.findOne({id: jwt_payload.id}, function(err, user) {
+  //   if (err) {
+  //     return done(err, false);
+  //   }
+  //   if (user) {
+  //     done(null, user);
+  //   } else {
+  //     done(null, false);
+  //   }
+  //});
 }));
 
 module.exports = {
