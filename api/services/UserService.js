@@ -14,9 +14,10 @@ module.exports = {
         });
   },
 
-  getOneUser: function (constraints, next) {
-      console.log("Inside getOneUser\nconstraints: " + JSON.stringify(constraints));
-      User.findOne(constraints)
+  getOneUser: function (constraint, next) {
+
+      console.log("Inside getOneUser\nconstraint: " + JSON.stringify(constraint));
+      User.findOne(constraint)
           .exec((err, user) => {
             console.log("Inside findOne.exec\nerr: " + JSON.stringify(err) + "\nuser :" + JSON.stringify(user));
             if (err)

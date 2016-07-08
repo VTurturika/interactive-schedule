@@ -8,8 +8,10 @@ module.exports = {
   */
   hashPassword: function (user) {
     if (user.password) {
+      console.log('password before: ' + user.password);
       //TODO rewrite to async style
       user.password = bcrypt.hashSync(user.password, 10);
+      console.log('password after: ' + user.password);
     }
   },
 
@@ -19,6 +21,7 @@ module.exports = {
   */
   comparePassword: function(password, user){
     //TODO rewrite to async style
+    console.log("\nInside comparePassword\n\npassword: " + password + " user: " + JSON.stringify(user));
     return bcrypt.compareSync(password, user.password);
   },
 
@@ -27,10 +30,9 @@ module.exports = {
   * @param user
   */
   createToken: function(user) {
-    var obj = user;
-    delete obj.password;
+
     return jwt.sign({
-      user: obj
+      id: user.id
     },
     sails.config.jwtSecret);
   }

@@ -10,7 +10,7 @@
 module.exports = {
 
   /**
-   * `UserController.createUser()`
+   * `UserController.createUser() DEPRECATED use AuthController.login
    */
   createUser: function (req, res) {
 
@@ -52,7 +52,7 @@ module.exports = {
    * `UserController.updateUser()`
    */
   updateUser: function (req, res) {
-
+    //TODO declarate oldId params as required, if oldId is undefined then updating all rows in db
     let oldId = req.body.oldId || undefined;
     let user = {};
 
@@ -113,12 +113,12 @@ module.exports = {
 
     let user = {};
 
-    user.surname = req.body.surname || undefined;
-    user.socialId = req.body.socialId || undefined;
-    user.email = req.body.email || undefined;
-
-    console.log("Inside login\nuser: " + JSON.stringify(user));
-
+    if(req.body.id) {
+      user.id = req.body.id;
+    }
+    else if(req.body.email) {
+      user.email = req.bode.id;
+    }
     UserService.getOneUser(user, (result) => {
       res.json({result : result});
     });

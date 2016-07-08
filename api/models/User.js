@@ -39,6 +39,7 @@ module.exports = {
     email: {
       type: 'string',
       required: true,
+      unique: true
     },
     password: {
       type: 'string',
@@ -47,20 +48,9 @@ module.exports = {
     lessons: {
       collection: 'lesson',
       via: 'teacherId',
-    },
-    // toJson: function() {
-    //    //TODO must delete more attributes
-    //     var obj = this.toObject();
-    //     delete obj.password;
-    //     return obj;
-    //   }
-    // }
+    }
   },
   beforeUpdate: function (values, next) {
-    JwtCipherService.hashPassword(values);
-    next();
-  },
-  beforeCreate: function (values, next) {
     JwtCipherService.hashPassword(values);
     next();
   }

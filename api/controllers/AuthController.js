@@ -33,6 +33,22 @@ module.exports = {
   },
 
   login: function (req, res) {
-    res.json({msg: "not implemented yet"});
+
+    //TODO add check req.body.email and req.bode.password to undefined
+
+    UserService.getOneUser({email: req.body.email}, (user) => {
+
+      if(user && JwtCipherService.comparePassword(req.body.password, user)) {
+        res.json({
+          user: user,
+          jwtToken: JwtCipherService.createToken(user)
+        })
+      }
+      else {
+        res.json({
+          msq: "Wrong email or password"
+        })
+      }
+    });
   }
 };
