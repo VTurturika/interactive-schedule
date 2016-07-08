@@ -57,11 +57,11 @@ module.exports = {
     // }
   },
   beforeUpdate: function (values, next) {
-    JwtChipherService.hashPassword(values);
+    JwtCipherService.hashPassword(values);
     next();
   },
   beforeCreate: function (values, next) {
-    JwtChipherService.hashPassword(values);
+    JwtCipherService.hashPassword(values);
     next();
   }
 };

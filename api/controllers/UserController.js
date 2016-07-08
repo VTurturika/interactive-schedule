@@ -108,5 +108,20 @@ module.exports = {
       res.json(users);
     });
   },
-};
 
+  getOneUser: function (req, res) {
+
+    let user = {};
+
+    user.surname = req.body.surname || undefined;
+    user.socialId = req.body.socialId || undefined;
+    user.email = req.body.email || undefined;
+
+    console.log("Inside login\nuser: " + JSON.stringify(user));
+
+    UserService.getOneUser(user, (result) => {
+      res.json({result : result});
+    });
+
+  }
+};

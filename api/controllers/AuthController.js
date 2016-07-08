@@ -27,12 +27,12 @@ module.exports = {
 		UserService.createUser(user, (user) => {
 			return res.json({
 				user: user,
-				jwtToken: JwtChipherService.createToken(user)
+				jwtToken: JwtCipherService.createToken(user)
 			});
 		});
   },
 
   login: function (req, res) {
-      return res.json{msg: "login() is not implemented yet!"}
+    res.json({msg: "not implemented yet"});
   }
 };

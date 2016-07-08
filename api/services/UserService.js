@@ -13,6 +13,19 @@ module.exports = {
           next(users);
         });
   },
+
+  getOneUser: function (constraints, next) {
+      console.log("Inside getOneUser\nconstraints: " + JSON.stringify(constraints));
+      User.findOne(constraints)
+          .exec((err, user) => {
+            console.log("Inside findOne.exec\nerr: " + JSON.stringify(err) + "\nuser :" + JSON.stringify(user));
+            if (err)
+              throw err;
+
+              next(user);
+          });
+  },
+
   createUser: function (userInfo, next) {
     User.create(userInfo).exec((err, user) => {
       if (err)
