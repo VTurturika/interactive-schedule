@@ -16,8 +16,6 @@ const JWT_STRATEGY_CONFIG = {
 passport.use(new JwtStrategy(JWT_STRATEGY_CONFIG, function(jwt_payload, done) {
 
   User.findOne({id: jwt_payload.id}, function(err, user) {
-    console.log("\nInside passport-jwt\n\nuser: " + JSON.stringify(user) +
-                " payload: " + JSON.stringify(jwt_payload));
     if (err) {
       return done(err, false);
     }

@@ -21,7 +21,6 @@ module.exports = {
   */
   comparePassword: function(password, user){
     //TODO rewrite to async style
-    console.log("\nInside comparePassword\n\npassword: " + password + " user: " + JSON.stringify(user));
     return bcrypt.compareSync(password, user.password);
   },
 
