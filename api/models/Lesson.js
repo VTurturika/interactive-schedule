@@ -2,7 +2,7 @@
  * Lesson.js
  *
  * @description :: Represents instance of a lesson in our Schedule. Have relation (many-1) with user (teacher) and a day
- * 
+ *
  * name - название предмета
  * datetime - дата + время начала пары
  * building - строение (0-улица, 2 - двухэтажка...)
@@ -47,6 +47,11 @@ module.exports = {
     },
     teacherId: {
       model: 'user',
+    },
+    subscribedBy: {
+      collection: 'user',
+      via: 'lesson',
+      through: 'userlesson',
     },
   }
 };

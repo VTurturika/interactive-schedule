@@ -81,9 +81,8 @@ module.exports = {
    */
   subscribeToLesson: function (req, res) {
 
-    // todo: subscribe(userId, lessonId)...
-    return res.json({
-      todo: 'subscribe() is not implemented yet!'
+    LessonService.subscribeToLesson(req.body.lessonId, req.body.userId, success => {
+      return res.json(success);
     });
   },
 

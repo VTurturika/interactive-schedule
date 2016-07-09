@@ -6,6 +6,7 @@ module.exports = {
   getUsers: function (constraints, next) {
     User.find(constraints)
         .populate('lessons')
+        .populate('subscribeList')
         .exec((err, users) => {
           if (err)
             throw err;
