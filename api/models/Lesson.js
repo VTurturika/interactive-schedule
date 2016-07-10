@@ -15,44 +15,56 @@
 
 module.exports = {
 
-
+  autoPK: true,
+  autoCreatedAt: true,
+  autoUpdatedAt: true,
 
   attributes: {
+
     name: {
       type: 'string',
-      required: true,
+      required: true
     },
+
     datetime: {
       type: 'datetime',
-      required: true,
+      required: true
     },
+
     building: {
       type: 'integer',
       required: 'true',
-      enum: [2, 5, 7, 0],
+      enum: [2, 5, 7, 0]
     },
+
     classroom: {
       type: 'string',
-      required: true,
+      required: true
     },
+
     faculty: {
       type: 'string',
       required: true,
-      enum: ['fizmat', 'inyaz'],
-
+      enum: ['fizmat', 'inyaz']
     },
+
+    //one lesson - one group (subgroup)
     groupId: {
       type: 'string',
-      required: true,
+      required: true
     },
+
+    //many lessons - many teachers
     teacherId: {
-      model: 'user',
+      collection: 'user',
+      via: 'lessons'
     },
+
+    //many lessons - many subscribers
     subscribedBy: {
       collection: 'user',
-      via: 'lesson',
-      through: 'userlesson',
-    },
+      via: 'subscribeList'
+    }
   }
 };
 

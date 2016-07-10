@@ -21,34 +21,51 @@ module.exports = {
 
   attributes: {
     name: {
-      type: 'text',
-      required: true,
+      type: 'string',
+      required: true
     },
     surname: {
       type: 'string',
-      required: true,
-    },
-    role: {
-      type: 'string',
-      enum: ['admin', 'teacher', 'student'],
-      required: true,
-    },
-    socialId: {
-      type: 'string',
+      required: true
     },
     email: {
       type: 'string',
-      required: true,
+      required: true
     },
+    password: {
+      type: 'string',
+      required: true
+    },
+    role: {
+      type: 'string',
+      enum: ['admin', 'teacher', 'groupLeader', 'student'],
+      required: true
+    },
+
+    statusConfirmed: {
+      type: 'boolean',
+
+      //TODO maybe keyword this unavailable here
+      defaultsTo : function() {
+        return this.role == 'admin' || this.role == 'student';
+      }
+    },
+
+    //TODO will be changed
+    socialId: {
+      type: 'string'
+    },
+
+    //only for teachers, many teachers - many lessons
     lessons: {
       collection: 'lesson',
-      via: 'teacherId',
+      via: 'teacherId'
     },
+
+    //for all users, many users - many lessons
     subscribeList: {
       collection: 'lesson',
-      via: 'user',
-      through: 'userlesson',
-    },
+      via: 'subscribedBy'
+    }
   }
 };
-
