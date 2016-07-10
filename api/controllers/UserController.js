@@ -23,9 +23,10 @@ module.exports = {
     user.email = req.body.email || undefined;
     user.lessons = req.body.lessons || undefined;
 
-    if (user.role === 'admin' && req.body.sudo !== process.env.sudoWord) {
-      return res.forbidden();
-    }
+    // DEPRECATED will be changed after merging with auth-dev
+    // if (user.role === 'admin' && req.body.sudo !== process.env.sudoWord) {
+    //   return res.forbidden();
+    // }
 
     UserService.createUser(user, user => {
       res.json(user);
@@ -107,6 +108,6 @@ module.exports = {
     UserService.getUsers(user, users => {
       res.json(users);
     });
-  },
+  }
 };
 

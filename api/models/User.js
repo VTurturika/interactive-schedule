@@ -28,13 +28,15 @@ module.exports = {
       type: 'string',
       required: true
     },
+    //TODO maybe need add native Waterline email validation
     email: {
       type: 'string',
       required: true
     },
     password: {
       type: 'string',
-      required: true
+      required: true,
+      defaultsTo: 'password' //TODO will be changed after merging with auth-dev
     },
     role: {
       type: 'string',
