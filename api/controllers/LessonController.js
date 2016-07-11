@@ -36,7 +36,7 @@ module.exports = {
   destroyLesson: function (req, res) {
     const sudoWord = req.body.sudo || undefined;
     if (sudoWord !== process.env.sudoWord) {
-      return res.forbidden();
+      return res.forbidden('Wrong SUDO word');
     }
     const lessonId = req.body.lessonId || req.body.lesson.id || undefined;
     LessonService.destroyLesson({id: lessonId}, success => {
@@ -48,7 +48,11 @@ module.exports = {
    * `LessonController.updateLesson()`
    */
   updateLesson: function (req, res) {
-    let oldId = req.body.oldId || undefined;
+    let oldId = req.body.oldId;
+    if (!oldId) {
+      return res.badRequest('You need to specify ID of subject to change');
+    }
+
     let lesson = {};
 
     if (req.body.name)

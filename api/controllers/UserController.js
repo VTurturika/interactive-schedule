@@ -40,7 +40,7 @@ module.exports = {
 
     const sudoWord = req.body.sudo || undefined;
     if (sudoWord !== process.env.sudoWord) {
-      return res.forbidden();
+      return res.forbidden('Wrong SUDO word');
     }
     const userId = req.body.userId || req.body.user.id || undefined;
     UserService.destroyUser({id: userId}, success => {
@@ -54,7 +54,11 @@ module.exports = {
    */
   updateUser: function (req, res) {
 
-    let oldId = req.body.oldId || undefined;
+    let oldId = req.body.oldId;
+    if (!oldId) {
+      return res.badRequest('You need to specify ID of subject to change');
+    }
+
     let user = {};
 
     if (req.body.name)
