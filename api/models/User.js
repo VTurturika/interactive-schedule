@@ -31,7 +31,8 @@ module.exports = {
     //TODO maybe need add native Waterline email validation
     email: {
       type: 'string',
-      required: true
+      required: true,
+      unique: true
     },
     password: {
       type: 'string',
