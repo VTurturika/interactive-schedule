@@ -33,7 +33,7 @@ module.exports = {
 
     building: {
       type: 'integer',
-      required: 'true',
+      required: true,
       enum: [2, 5, 7, 0]
     },
 

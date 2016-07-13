@@ -1,41 +1,56 @@
 "use strict";
 
 module.exports = {
-  
+
   //TODO must be tested with new Lessons definition
-  
+
   getLessons: function (constraints, next) {
     Lesson.find(constraints)
           .populate('teacherId')
           .populate('subscribedBy')
           .exec((err, lessons) => {
-            if (err)
-              throw err;
-            next(lessons);
+            if (err) {
+              next(err, null)
+            }
+            else {
+              next(null, lessons);
+            }
           });
   },
+
   createLesson: function (lessonInfo, next) {
     Lesson.create(lessonInfo).exec((err, lesson) => {
-      if (err)
-        return next(err);
-      next(lesson);
+      if (err) {
+        next(err, null)
+      }
+      else {
+        next(null, lesson)
+      }
     });
   },
+
   destroyLesson: function (lessonInfo, next) {
     Lesson.destroy(lessonInfo).exec((err, lesson) => {
-      if (err)
-        return next(err);
-      next(lesson);
-
+      if (err) {
+        next(err, null);
+      }
+      else {
+        next(null, lesson)
+      }
     });
   },
+
   updateLesson: function (oldLessonId, newData, next) {
     Lesson.update(oldLessonId, newData).exec((err, updated) => {
-      if (err)
-        return next(err);
-      next(updated);
+      if (err) {
+       next(err, null);
+      }
+      else {
+        next(null, updated);
+      }
     });
   },
+
   subscribeToLesson: function (lessonId, userId, next) {
 
     // User.findOne(userId).exec((err, user) => {
