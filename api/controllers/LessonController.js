@@ -24,9 +24,13 @@ module.exports = {
     lesson.faculty = req.body.faculty || undefined;
     lesson.groupId = req.body.groupId || undefined;
 
-
-    LessonService.createLesson(lesson, lesson => {
-      res.json(lesson);
+    LessonService.createLesson(lesson, (err, lesson) => {
+      if(err || !lesson) {
+        res.badRequest();
+      }
+      else {
+        res.json(lesson);
+      }
     });
   },
 
@@ -34,13 +38,16 @@ module.exports = {
    * `LessonController.destroyLesson()`
    */
   destroyLesson: function (req, res) {
-    const sudoWord = req.body.sudo || undefined;
-    if (sudoWord !== process.env.sudoWord) {
-      return res.forbidden('Wrong SUDO word');
-    }
-    const lessonId = req.body.lessonId || req.body.lesson.id || undefined;
-    LessonService.destroyLesson({id: lessonId}, success => {
-      res.json(success);
+
+    const lessonId = req.body.lessonId || undefined;
+    LessonService.destroyLesson({id: lessonId}, (err, success) => {
+      if(err || !success) {
+        res.badRequest();
+      }
+      else {
+        res.json(success);
+
+      }
     });
   },
 
@@ -75,8 +82,13 @@ module.exports = {
       lesson.createdAt = req.body.createdAt;
 
 
-    LessonService.updateLesson(oldId, lesson, lesson => {
-      res.json(lesson);
+    LessonService.updateLesson(oldId, lesson, (err, updatedLesson) => {
+      if(err || !updatedLesson) {
+        res.badRequest();
+      }
+      else {
+        res.json(updatedLesson);
+      }
     });
   },
 
@@ -118,8 +130,13 @@ module.exports = {
     if (req.param('faculty'))
       lesson.faculty = req.param('faculty');
 
-    LessonService.getLessons(lesson, lessons => {
-      return res.json(lessons);
+    LessonService.getLessons(lesson, (err, lessons) => {
+      if(err || !lessons) {
+        res.badRequest();
+      }
+      else {
+        res.json(lessons)
+      }
     });
   },
 };
