@@ -2,21 +2,21 @@
 
 var should = require('should');
 
-describe('UserController', function() {
+describe('UserService', function() {
 
-  let alreadyCreated = true,
-      testUser1 = {
-        name: 'userName1',
-        surname: 'userSurname1',
-        email: 'user1@email.com',
+
+  let testUser1 = {
+        name: 'serviceUserName1',
+        surname: 'serviceUserSurname1',
+        email: 'serviceUser1@email.com',
         role: 'student'
-      },
-      testUser2 = {
-        name: 'userName2',
-        surname: 'userSurname2',
-        email: 'user2@email.com',
+    },
+    testUser2 = {
+        name: 'serviceUserName2',
+        surname: 'serviceUserSurname2',
+        email: 'serviceUser2@email.com',
         role: 'student'
-      };
+    };
 
   describe('#createUser()', function() {
 
@@ -134,7 +134,7 @@ describe('UserController', function() {
 
     it('should update only user1', function (done) {
 
-      testUser1.surname = 'UserSurname1';
+      testUser1.surname = 'ServiceUserSurname1';
       sails.services.userservice.updateUser(testUser1.id,
                                           { surname : testUser1.surname},
                                           (err, res) => {
@@ -157,33 +157,6 @@ describe('UserController', function() {
           }
         });
     });
-
-    it('should reupdate only user1', function (done) {
-
-      testUser1.surname = 'userSurname1';
-      sails.services.userservice.updateUser(testUser1.id,
-        { surname : testUser1.surname},
-        (err, res) => {
-          if(err) {
-            console.log('Error in UserService.updateUser()');
-          }
-          else {
-            res.should.be.Array();
-            res.should.have.length(1);
-            res[0].should.containEql(testUser1);
-
-            sails.services.userservice.getUsers({id:testUser2.id}, (err, res) => {
-
-              res.should.be.Array();
-              res.should.have.length(1);
-              res[0].should.containEql(testUser2);
-
-              done();
-            })
-          }
-        });
-    });
-
 
   });
 

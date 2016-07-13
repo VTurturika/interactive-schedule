@@ -23,13 +23,15 @@ module.exports = {
     user.email = req.body.email || undefined;
     user.lessons = req.body.lessons || undefined;
 
-    // DEPRECATED will be changed after merging with auth-dev
-    // if (user.role === 'admin' && req.body.sudo !== process.env.sudoWord) {
-    //   return res.forbidden();
-    // }
 
-    UserService.createUser(user, user => {
-      res.json(user);
+    UserService.createUser(user, (err, user) => {
+      if(err || !user){
+        res.badRequest('Bad request!');
+      }
+      else {
+        res.json(user);
+      }
+
     });
   },
 
@@ -38,13 +40,18 @@ module.exports = {
    */
   destroyUser: function (req, res) {
 
-    const sudoWord = req.body.sudo || undefined;
-    if (sudoWord !== process.env.sudoWord) {
-      return res.forbidden('Wrong SUDO word');
+    const userId = req.body.userId || undefined;
+    if(!userId) {
+      return res.badRequest('You need to specify ID of subject to destroy');
     }
-    const userId = req.body.userId || req.body.user.id || undefined;
-    UserService.destroyUser({id: userId}, success => {
-      res.json(success);
+
+    UserService.destroyUser({id: userId}, (err, success) => {
+      if(err || !success) {
+        res.badRequest('Bad request!');
+      }
+      else {
+        res.json(success);
+      }
     });
 
   },
@@ -78,8 +85,14 @@ module.exports = {
     if (req.body.createdAt)
       user.createdAt = req.body.createdAt;
 
-    UserService.updateUser(oldId, user, user => {
-      res.json(user);
+    UserService.updateUser(oldId, user, (err, updatedUser) => {
+      if(err || !updatedUser) {
+        res.badRequest();
+      }
+      else {
+        res.json(updatedUser);
+      }
+
     });
   },
 
@@ -109,8 +122,11 @@ module.exports = {
     if (req.param('updatedAt'))
       user.updatedAt = req.param('updatedAt');
 
-    UserService.getUsers(user, users => {
-      res.json(users);
+    UserService.getUsers(user, (err, users) => {
+      if(err || !users) {
+        res.badRequest('Bad request!');
+      }
+        res.json(users);
     });
   }
 };
