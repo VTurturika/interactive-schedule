@@ -22,7 +22,7 @@ describe('LessonService', function() {
       groupId: '16'
     };
 
-  describe('#createLesson()', function() {
+  describe('createLesson()', function() {
 
     it('should create lesson1', function (done) {
 
@@ -58,7 +58,7 @@ describe('LessonService', function() {
     });
   });
 
-  describe('#getLessons()', function() {
+  describe('getLessons()', function() {
 
     it('should return only lesson1', function (done) {
 
@@ -110,7 +110,7 @@ describe('LessonService', function() {
 
   });
 
-  describe('#updateLesson()', function() {
+  describe('updateLesson()', function() {
 
     it('should update only lesson1', function (done) {
 
@@ -141,7 +141,7 @@ describe('LessonService', function() {
 
   });
 
-  describe('#destroyUser()', function() {
+  describe('destroyLesson()', function() {
 
     it('should remove lesson1 form database', function (done) {
 

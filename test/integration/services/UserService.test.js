@@ -18,7 +18,7 @@ describe('UserService', function() {
         role: 'student'
     };
 
-  describe('#createUser()', function() {
+  describe('createUser()', function() {
 
     it('should create test user1', function (done) {
 
@@ -29,8 +29,6 @@ describe('UserService', function() {
          }
          else {
            res.should.containEql(testUser1);
-           console.log('new user:\n');
-           console.log(res);
          }
 
           done();
@@ -46,8 +44,6 @@ describe('UserService', function() {
         }
         else {
           res.should.containEql(testUser2);
-          console.log('\nnew user:\n');
-          console.log(res);
         }
 
         done();
@@ -56,7 +52,7 @@ describe('UserService', function() {
 
   });
 
-  describe('#getUsers()', function() {
+  describe('getUsers()', function() {
 
     it('should returns array of users', function (done) {
 
@@ -66,7 +62,6 @@ describe('UserService', function() {
         }
         else {
           res.should.be.Array();
-          console.log('\nNumber of users in db: ' + res.length + '\n');
         }
 
         done();
@@ -130,7 +125,7 @@ describe('UserService', function() {
 
   });
 
-  describe('#updateUser()', function() {
+  describe('updateUser()', function() {
 
     it('should update only user1', function (done) {
 
@@ -160,7 +155,7 @@ describe('UserService', function() {
 
   });
 
-  describe('#destroyUser()', function() {
+  describe('destroyUser()', function() {
 
     it('should remove user1 from database', function (done) {
 

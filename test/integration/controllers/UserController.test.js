@@ -18,7 +18,7 @@ describe('UserController', function() {
         role: 'student'
       };
 
-  describe('#createUser()', function() {
+  describe('createUser()', function() {
 
     it('should create test user1', function (done) {
 
@@ -63,13 +63,15 @@ describe('UserController', function() {
 
   });
 
-  describe('#getUsers()', function() {
+  describe('getUsers()', function() {
 
     it('should return array of users', function (done) {
       request(sails.hooks.http.app)
         .post('/user/getUsers')
         .expect(200)
         .end((err, res) => {
+
+          res.body.should.be.Array();
 
           done();
         });
@@ -78,9 +80,14 @@ describe('UserController', function() {
     it('should return user1 and user2', function (done){
       request(sails.hooks.http.app)
         .post('/user/getUsers')
+        .send({
+          role: 'student'
+        })
         .expect(200)
         .end((err, res) => {
 
+          res.body.should.be.Array();
+          res.body.should.containDeep([testUser1, testUser2]);
           done();
         });
     });
@@ -105,13 +112,26 @@ describe('UserController', function() {
           res.body.should.have.length(1);
           res.body[0].should.containDeep(testUser1);
 
-          done();
+          request(sails.hooks.http.app)
+            .post('/user/getUsers')
+            .send({
+                email: testUser2.email
+            })
+            .expect(200)
+            .end((err, res) => {
+
+              res.body.should.be.Array();
+              res.body.should.have.length(1);
+              res.body[0].should.containDeep(testUser2);
+
+              done();
+            });
         });
     });
 
   });
 
-  describe('#destroyUser()', function () {
+  describe('destroyUser()', function () {
 
     it('should remove user1 from database', function (done) {
 
@@ -136,7 +156,7 @@ describe('UserController', function() {
               res.body.should.be.Array();
               res.body.should.have.length(1);
               res.body[0].should.containDeep(testUser2);
-              
+
             });
 
           done();
