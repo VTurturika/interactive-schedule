@@ -71,5 +71,27 @@ module.exports = {
       }
 
     });
+  },
+
+  unsubscribeToLesson: function (lessonId, userId, next) {
+
+    Lesson.findOne(lessonId).exec((err, lesson) => {
+
+      if(err) {
+        next(err, null)
+      }
+      else {
+        lesson.subscribedBy.remove(userId);
+        lesson.save((err) => {
+          if(err) {
+            next(err, null)
+          }
+          else {
+            this.getLessons({id: lessonId}, next)
+          }
+        })
+      }
+
+    });
   }
 };

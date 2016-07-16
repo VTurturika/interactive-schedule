@@ -111,9 +111,28 @@ module.exports = {
           subscribedBy: lesson[0].subscribedBy
         })
       }
-
     });
   },
+
+  unsubscribeToLesson: function (req, res) {
+
+    if(!req.body.lessonId || !req.body.userId) {
+      res.badRequest('1');
+    }
+
+    LessonService.unsubscribeToLesson(req.body.lessonId, req.body.userId, (err, lesson) => {
+
+      if(err) {
+        res.badRequest();
+      }
+      else{
+        res.json({
+          subscribedBy: lesson[0].subscribedBy
+        })
+      }
+    });
+  },
+
 
   /**
    *

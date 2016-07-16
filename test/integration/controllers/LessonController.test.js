@@ -198,6 +198,25 @@ describe('LessonService', function() {
         });
     });
 
+    it('should unsubscribe testSubscriber to lesson1', function (done) {
+
+      request(sails.hooks.http.app)
+        .post('/lesson/unsubscribeToLesson')
+        .send({
+          lessonId: lesson1.id,
+          userId: testSubscriber.id
+        })
+        .expect(200)
+        .end((err, res) => {
+
+          res.body.subscribedBy.should.be.Array();
+          res.body.subscribedBy.should.have.length(0);
+          //res.body.subscribedBy[0].should.containEql(testSubscriber);
+
+          done();
+        });
+    });
+
     it('should remove testSubscriber from database', function (done) {
 
       request(sails.hooks.http.app)

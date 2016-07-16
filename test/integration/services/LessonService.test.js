@@ -189,6 +189,28 @@ describe('LessonService', function() {
 
     });
 
+    it('should unsubscribe testSubscriber to lesson1', function(done) {
+
+      sails.services.lessonservice.unsubscribeToLesson(lesson1.id, testSubscriber.id, (err, lesson) => {
+
+        if(err) {
+          console.log('Error in LessonService.unsubscribeToLesson()');
+        }
+        else {
+
+          lesson.should.be.Array();
+          lesson.should.have.length(1);
+
+          lesson[0].subscribedBy.should.be.Array();
+          lesson[0].subscribedBy.should.have.length(0);
+
+        }
+        done();
+      });
+
+    });
+
+
     it('should remove testSubscriber from database', function (done) {
 
       sails.services.userservice.destroyUser({id : testSubscriber.id}, (err, res) => {
