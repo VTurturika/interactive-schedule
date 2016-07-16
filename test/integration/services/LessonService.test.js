@@ -141,7 +141,7 @@ describe('LessonService', function() {
 
   });
 
-  describe('#subscribeToLesson()', function() {
+  describe('subscribeToLesson()', function() {
 
     let testSubscriber = {
       name: 'subscriberName',

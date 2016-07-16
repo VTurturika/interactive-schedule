@@ -154,6 +154,69 @@ describe('LessonService', function() {
 
   });
 
+  describe('subscribeToLesson', function () {
+
+    let testSubscriber = {
+      name: 'subscriberName',
+      surname: 'subscriberSurname',
+      email: 'subscriber@email.com',
+      role: 'student'
+    };
+
+    it('should create testSubscriber', function (done) {
+
+      request(sails.hooks.http.app)
+        .post('/user/createUser')
+        .send(testSubscriber)
+        .expect(200)
+        .end((err, res) => {
+
+          res.body.should.containDeep(testSubscriber);
+          testSubscriber.id = res.body.id;
+
+          done();
+        });
+
+    });
+
+    it('should subscribe testSubscriber to lesson1', function (done) {
+
+      request(sails.hooks.http.app)
+        .post('/lesson/subscribeToLesson')
+        .send({
+          lessonId: lesson1.id,
+          userId: testSubscriber.id
+        })
+        .expect(200)
+        .end((err, res) => {
+
+          res.body.subscribedBy.should.be.Array();
+          res.body.subscribedBy.should.have.length(1);
+          res.body.subscribedBy[0].should.containEql(testSubscriber);
+
+         done();
+        });
+    });
+
+    it('should remove testSubscriber from database', function (done) {
+
+      request(sails.hooks.http.app)
+        .post('/user/destroyUser')
+        .send({userId : testSubscriber.id})
+        .expect(200)
+        .end((err, res) => {
+
+          res.body.should.be.Array();
+          res.body.should.have.length(1);
+          res.body[0].should.containDeep(testSubscriber);
+
+          done();
+        });
+    });
+
+
+  });
+
   describe('destroyLesson()', function() {
 
     it('should remove lesson1 from database', function (done) {
