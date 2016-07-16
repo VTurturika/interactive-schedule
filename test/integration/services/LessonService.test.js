@@ -141,6 +141,73 @@ describe('LessonService', function() {
 
   });
 
+  describe('#subscribeToLesson()', function() {
+
+    let testSubscriber = {
+      name: 'subscriberName',
+      surname: 'subscriberSurname',
+      email: 'subscriber@email.com',
+      role: 'student'
+    };
+
+    it('should create test testSubscriber', function (done) {
+
+      sails.services.userservice.createUser(testSubscriber, (err, res) => {
+        if(err) {
+          err.should.be.Error();
+          console.log('testSubscriber already created!\n');
+        }
+        else {
+          res.should.containEql(testSubscriber);
+          testSubscriber.id = res.id;
+        }
+
+        done();
+      });
+    });
+
+
+    it('should subscribe testSubscriber to lesson1', function(done) {
+
+      sails.services.lessonservice.subscribeToLesson(lesson1.id, testSubscriber.id, (err, lesson) => {
+
+        if(err) {
+          console.log('Error in LessonService.subscribeToLesson()');
+        }
+        else {
+
+          lesson.should.be.Array();
+          lesson.should.have.length(1);
+
+          lesson[0].subscribedBy.should.be.Array();
+          lesson[0].subscribedBy.should.have.length(1);
+          lesson[0].subscribedBy[0].should.containEql(testSubscriber);
+
+        }
+        done();
+        });
+
+    });
+
+    it('should remove testSubscriber from database', function (done) {
+
+      sails.services.userservice.destroyUser({id : testSubscriber.id}, (err, res) => {
+
+        if(err) {
+          console.log('Error in UserService.destroyUser()');
+        }
+        else {
+          res.should.be.Array();
+          res.should.have.length(1);
+          res[0].should.containEql(testSubscriber);
+        }
+        done();
+      });
+
+    });
+
+  });
+
   describe('destroyLesson()', function() {
 
     it('should remove lesson1 form database', function (done) {
