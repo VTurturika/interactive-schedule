@@ -18,7 +18,6 @@ module.exports = {
 
     lesson.name = req.body.name || undefined;
     lesson.datetime = req.body.datetime || undefined; // new Date().toISOString()
-    lesson.teacherId = req.body.teacherId || undefined; // PK(id) of User with role Teacher
     lesson.building = req.body.building || 0;
     lesson.classroom = req.body.classroom || undefined;
     lesson.faculty = req.body.faculty || undefined;
@@ -66,8 +65,6 @@ module.exports = {
       lesson.name = req.body.name;
     if (req.body.datetime)
       lesson.datetime = req.body.datetime;
-    if (req.body.teacherId)
-      lesson.teacherId = req.body.teacherId;
     if (req.body.building)
       lesson.building = req.body.building;
     if (req.body.faculty)

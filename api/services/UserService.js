@@ -18,7 +18,7 @@ module.exports = {
           }
         });
   },
-  
+
   createUser: function (userInfo, next) {
 
     User.create(userInfo).exec((err, user) => {
@@ -30,12 +30,12 @@ module.exports = {
       }
     });
   },
-  
+
   destroyUser: function (userInfo, next) {
 
     User.destroy(userInfo).exec((err, user) => {
       if (err) {
-        next(err, null);  
+        next(err, null);
       }
       else {
         next(null, user);
@@ -53,6 +53,29 @@ module.exports = {
         next(null, updated);
       }
     });
+  },
+
+  assignLesson: function (teacherId, lessonId, next) {
+
+    User.findOne(teacherId).exec((err, teacher) => {
+
+      if(err){
+        next(err, null);
+      }
+      else {
+        teacher.lessons.add(lessonId);
+        teacher.save((err) => {
+          if(err) {
+            next(err, null)
+          }
+          else {
+            this.getUsers({id: teacherId}, next)
+          }
+        })
+      }
+
+    });
+
   }
-  
+
 };

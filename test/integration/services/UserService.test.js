@@ -11,11 +11,19 @@ describe('UserService', function() {
         email: 'serviceUser1@email.com',
         role: 'student'
     },
+
     testUser2 = {
         name: 'serviceUserName2',
         surname: 'serviceUserSurname2',
         email: 'serviceUser2@email.com',
         role: 'student'
+    },
+
+    testTeacher = {
+      name: 'testTeacherName',
+      surname: 'testTeacherSurname',
+      email: 'testTeacher@email.com',
+      role: 'teacher'
     };
 
   describe('createUser()', function() {
@@ -44,6 +52,22 @@ describe('UserService', function() {
         }
         else {
           res.should.containEql(testUser2);
+        }
+
+        done();
+      });
+    });
+
+    it('should create testTeacher', function (done) {
+
+      sails.services.userservice.createUser(testTeacher, (err, res) => {
+        if(err) {
+          err.should.be.Error();
+          console.log('user2 already created!\n');
+        }
+        else {
+          res.should.containEql(testTeacher);
+          testTeacher.id = res.id;
         }
 
         done();
@@ -155,6 +179,74 @@ describe('UserService', function() {
 
   });
 
+  describe('assignLesson()', function () {
+
+    let testLesson = {
+        name: 'assignTestLesson',
+        datetime: new Date().toISOString(),
+        building: 7,
+        classroom: '214',
+        faculty: 'fizmat',
+        groupId: '36'
+      };
+
+    it('should create testLesson', function (done) {
+
+      sails.services.lessonservice.createLesson(testLesson, (err, res) => {
+        if(err) {
+          console.log('Error in LessonService.creteLesson()');
+        }
+        else {
+          delete testLesson.datetime;
+          res.should.containDeep(testLesson);
+          testLesson.id = res.id;
+        }
+
+        done();
+      });
+    });
+
+    it('should assign testLesson to testTeacher', function (done) {
+
+      sails.services.userservice.assignLesson(testTeacher.id, testLesson.id, (err, teacher) => {
+        if(err) {
+          console.log('Error in LessonService.assignLesson()');
+        }
+        else {
+          teacher.should.be.Array();
+          teacher.should.have.length(1);
+
+          teacher[0].lessons.should.be.Array();
+          teacher[0].lessons.should.have.length(1);
+          teacher[0].lessons[0].should.containEql(testLesson);
+
+        }
+        done();
+      })
+
+    });
+
+
+    it('should remove testLesson form database', function (done) {
+
+      sails.services.lessonservice.destroyLesson(testLesson.id, (err, res) => {
+
+        if(err) {
+          console.log('Error in LessonService.destroyLesson()');
+        }
+        else {
+          res.should.be.Array();
+          res.should.have.length(1);
+          res[0].should.containDeep(testLesson);
+        }
+        done();
+      });
+
+    });
+
+
+  });
+
   describe('destroyUser()', function() {
 
     it('should remove user1 from database', function (done) {
@@ -190,6 +282,24 @@ describe('UserService', function() {
       });
 
     });
+
+    it('should remove testTeacher from database', function (done) {
+
+      sails.services.userservice.destroyUser({id : testTeacher.id}, (err, res) => {
+
+        if(err) {
+          console.log('Error in UserService.destroyUser()');
+        }
+        else {
+          res.should.be.Array();
+          res.should.have.length(1);
+          res[0].should.containEql(testTeacher);
+        }
+        done();
+      });
+
+    });
+
 
   });
 

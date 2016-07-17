@@ -21,8 +21,6 @@ module.exports = {
     user.role = req.body.role || undefined;
     user.socialId = req.body.socialId || undefined;
     user.email = req.body.email || undefined;
-    user.lessons = req.body.lessons || undefined;
-
 
     UserService.createUser(user, (err, user) => {
       if(err || !user){
@@ -78,8 +76,6 @@ module.exports = {
       user.socialId = req.body.socialId;
     if (req.body.email)
       user.email = req.body.email;
-    if (req.body.lessons)
-      user.lessons = req.body.lessons;
     if (req.body.id)
       user.id = req.body.id;
     if (req.body.createdAt)
