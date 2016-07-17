@@ -213,17 +213,33 @@ describe('UserService', function() {
           console.log('Error in LessonService.assignLesson()');
         }
         else {
-          teacher.should.be.Array();
-          teacher.should.have.length(1);
 
-          teacher[0].lessons.should.be.Array();
-          teacher[0].lessons.should.have.length(1);
-          teacher[0].lessons[0].should.containEql(testLesson);
+          teacher.userId.should.equal(testTeacher.id);
+          teacher.lessons.should.be.Array();
+          teacher.lessons.should.have.length(1);
+          teacher.lessons[0].should.containEql(testLesson);
 
         }
         done();
       })
 
+    });
+
+    it('should unassign testLeson to testTeacher', function (done) {
+
+      sails.services.userservice.unassignLesson(testTeacher.id, testLesson.id, (err, teacher) => {
+        if(err) {
+          console.log('Error in LessonService.unassignLesson()');
+        }
+        else {
+
+          teacher.userId.should.equal(testTeacher.id);
+          teacher.lessons.should.be.Array();
+          teacher.lessons.should.have.length(0);
+
+        }
+        done();
+      })
     });
 
 

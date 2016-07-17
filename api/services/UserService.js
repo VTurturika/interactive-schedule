@@ -69,13 +69,57 @@ module.exports = {
             next(err, null)
           }
           else {
-            this.getUsers({id: teacherId}, next)
+            this.getUsers({id: teacherId}, (err, teacher) => {
+
+              if(err) next(err, null);
+              else {
+
+                let result = {
+                  userId: teacher[0].id,
+                  lessons: teacher[0].lessons
+                };
+
+                next(null, result);
+              }
+
+            })
           }
         })
       }
-
     });
+  },
 
+  unassignLesson: function (teacherId, lessonId, next) {
+    User.findOne(teacherId).exec((err, teacher) => {
+
+      if(err){
+        next(err, null);
+      }
+      else {
+        teacher.lessons.remove(lessonId);
+        teacher.save((err) => {
+          if(err) {
+            next(err, null)
+          }
+          else {
+            this.getUsers({id: teacherId}, (err, teacher) => {
+
+              if(err) next(err, null);
+              else {
+
+                let result = {
+                  userId: teacher[0].id,
+                  lessons: teacher[0].lessons
+                };
+
+                next(null, result);
+              }
+
+            })
+          }
+        })
+      }
+    })
   }
 
 };

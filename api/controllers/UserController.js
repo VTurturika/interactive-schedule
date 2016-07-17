@@ -124,6 +124,42 @@ module.exports = {
       }
         res.json(users);
     });
+  },
+
+  //only for teachers
+  assignLesson: function(req,res) {
+
+    if(!req.body.teacherId || !req.body.lessonId) {
+      res.badRequest();
+    }
+
+    UserService.assignLesson(req.body.teacherId, req.body.lessonId, (err, teacher) => {
+      if(err) {
+        res.badRequest();
+      }
+      else{
+        res.json(teacher);
+      }
+    });
+  },
+
+  //only for teachers
+  unassignLesson: function(req,res) {
+
+    if(!req.body.teacherId || !req.body.lessonId) {
+      res.badRequest();
+    }
+
+    UserService.unassignLesson(req.body.teacherId, req.body.lessonId, (err, teacher) => {
+      if(err) {
+        res.badRequest();
+      }
+      else{
+        res.json(teacher);
+      }
+    });
+
   }
+
 };
 

@@ -16,7 +16,13 @@ describe('UserController', function() {
         surname: 'controllerUserSurname2',
         email: 'controllerUser2@email.com',
         role: 'student'
-      };
+      },
+      testTeacher = {
+        name: 'testTeacherName',
+        surname: 'testTeacherSurname',
+        email: 'testTeacher@email.com',
+        role: 'teacher'
+    };
 
   describe('createUser()', function() {
 
@@ -46,6 +52,22 @@ describe('UserController', function() {
 
           res.body.should.containDeep(testUser2);
           testUser2.id = res.body.id;
+
+          done();
+        });
+
+    });
+
+    it('should create testTeacher', function (done) {
+
+      request(sails.hooks.http.app)
+        .post('/user/createUser')
+        .send(testTeacher)
+        .expect(200)
+        .end((err, res) => {
+
+          res.body.should.containDeep(testTeacher);
+          testTeacher.id = res.body.id;
 
           done();
         });
@@ -131,6 +153,94 @@ describe('UserController', function() {
 
   });
 
+  describe('assignLesson()', function () {
+
+    let testLesson = {
+        name: 'serviceTest1Lesson',
+        datetime: new Date().toISOString(),
+        building: 7,
+        classroom: '214',
+        faculty: 'fizmat',
+        groupId: '36'
+      };
+
+    it('should create testLesson', function (done) {
+
+      request(sails.hooks.http.app)
+        .post('/lesson/createLesson')
+        .send(testLesson)
+        .expect(200)
+        .end((err, res) => {
+
+          res.body.should.containDeep(testLesson);
+          testLesson.id = res.body.id;
+
+          done();
+        });
+    });
+
+
+    it('should assign testLesson to testTeacher', function(done) {
+
+      request(sails.hooks.http.app)
+        .post('/user/assignLesson')
+        .send({
+          lessonId: testLesson.id,
+          teacherId: testTeacher.id
+        })
+        .expect(200)
+        .end((err, res) => {
+
+          res.body.lessons.should.be.Array();
+          res.body.lessons.should.have.length(1);
+          res.body.lessons[0].should.containEql(testLesson);
+
+          done();
+        });
+
+    });
+
+    it('should unassign testLesson to testTeacher', function(done) {
+
+      request(sails.hooks.http.app)
+        .post('/user/unassignLesson')
+        .send({
+          lessonId: testLesson.id,
+          teacherId: testTeacher.id
+        })
+        .expect(200)
+        .end((err, res) => {
+
+          res.body.lessons.should.be.Array();
+          res.body.lessons.should.have.length(0);
+
+          done();
+        });
+
+    });
+
+
+    it('should remove testLesson from database', function (done) {
+
+      request(sails.hooks.http.app)
+        .post('/lesson/destroyLesson')
+        .send({
+          lessonId : testLesson.id
+        })
+        .expect(200)
+        .end((err, res) => {
+
+          res.body.should.be.Array();
+          res.body.should.have.length(1);
+          res.body[0].should.containDeep(testLesson);
+
+          done();
+        });
+    });
+
+
+  });
+
   describe('destroyUser()', function () {
 
     it('should remove user1 from database', function (done) {
@@ -174,6 +284,21 @@ describe('UserController', function() {
           res.body.should.be.Array();
           res.body.should.have.length(1);
           res.body[0].should.containDeep(testUser2);
+          done();
+        });
+    });
+
+    it('should remove testTeacher from database', function (done) {
+
+      request(sails.hooks.http.app)
+        .post('/user/destroyUser')
+        .send({userId : testTeacher.id})
+        .expect(200)
+        .end((err, res) => {
+
+          res.body.should.be.Array();
+          res.body.should.have.length(1);
+          res.body[0].should.containDeep(testTeacher);
           done();
         });
     });

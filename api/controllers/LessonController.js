@@ -95,7 +95,7 @@ module.exports = {
   subscribeToLesson: function (req, res) {
 
     if(!req.body.lessonId || !req.body.userId) {
-      res.badRequest('1');
+      res.badRequest();
     }
 
     LessonService.subscribeToLesson(req.body.lessonId, req.body.userId, (err, lesson) => {
