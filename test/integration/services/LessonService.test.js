@@ -176,12 +176,10 @@ describe('LessonService', function() {
         }
         else {
 
-          lesson.should.be.Array();
-          lesson.should.have.length(1);
-
-          lesson[0].subscribedBy.should.be.Array();
-          lesson[0].subscribedBy.should.have.length(1);
-          lesson[0].subscribedBy[0].should.containEql(testSubscriber);
+          lesson.lessonId.should.equal(lesson1.id);
+          lesson.subscribedBy.should.be.Array();
+          lesson.subscribedBy.should.have.length(1);
+          lesson.subscribedBy[0].should.containEql(testSubscriber);
 
         }
         done();
@@ -198,11 +196,9 @@ describe('LessonService', function() {
         }
         else {
 
-          lesson.should.be.Array();
-          lesson.should.have.length(1);
-
-          lesson[0].subscribedBy.should.be.Array();
-          lesson[0].subscribedBy.should.have.length(0);
+          lesson.lessonId.should.equal(lesson1.id);
+          lesson.subscribedBy.should.be.Array();
+          lesson.subscribedBy.should.have.length(0);
 
         }
         done();

@@ -104,9 +104,7 @@ module.exports = {
         res.badRequest();
       }
       else{
-        res.json({
-          subscribedBy: lesson[0].subscribedBy
-        })
+        res.json(lesson);
       }
     });
   },
@@ -114,7 +112,7 @@ module.exports = {
   unsubscribeToLesson: function (req, res) {
 
     if(!req.body.lessonId || !req.body.userId) {
-      res.badRequest('1');
+      res.badRequest();
     }
 
     LessonService.unsubscribeToLesson(req.body.lessonId, req.body.userId, (err, lesson) => {
@@ -123,9 +121,7 @@ module.exports = {
         res.badRequest();
       }
       else{
-        res.json({
-          subscribedBy: lesson[0].subscribedBy
-        })
+        res.json(lesson);
       }
     });
   },

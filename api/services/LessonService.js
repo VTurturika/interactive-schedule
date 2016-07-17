@@ -65,7 +65,20 @@ module.exports = {
             next(err, null)
           }
           else {
-            this.getLessons({id: lessonId}, next)
+            this.getLessons({id: lessonId}, (err, lesson) => {
+
+              if(err) next(err, null);
+              else {
+
+                let result = {
+                  lessonId: lesson[0].id,
+                  subscribedBy: lesson[0].subscribedBy
+                };
+
+               return next(null, result);
+
+              }
+            })
           }
         })
       }
@@ -87,7 +100,20 @@ module.exports = {
             next(err, null)
           }
           else {
-            this.getLessons({id: lessonId}, next)
+            this.getLessons({id: lessonId},(err, lesson) => {
+
+              if(err) next(err, null);
+              else {
+
+                let result = {
+                  lessonId: lesson[0].id,
+                  subscribedBy: lesson[0].subscribedBy
+                };
+
+                return next(null, result);
+
+              }
+            })
           }
         })
       }
