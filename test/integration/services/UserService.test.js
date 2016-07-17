@@ -6,23 +6,26 @@ describe('UserService', function() {
 
 
   let testUser1 = {
-        name: 'serviceUserName1',
-        surname: 'serviceUserSurname1',
-        email: 'serviceUser1@email.com',
-        role: 'student'
+      name: 'serviceUserName1',
+      surname: 'serviceUserSurname1',
+      email: 'serviceUser1@email.com',
+      password: 'password',
+      role: 'student'
     },
 
     testUser2 = {
-        name: 'serviceUserName2',
-        surname: 'serviceUserSurname2',
-        email: 'serviceUser2@email.com',
-        role: 'student'
+      name: 'serviceUserName2',
+      surname: 'serviceUserSurname2',
+      email: 'serviceUser2@email.com',
+      password: 'password',
+      role: 'student'
     },
 
     testTeacher = {
       name: 'testTeacherName',
       surname: 'testTeacherSurname',
       email: 'testTeacher@email.com',
+      password: 'password',
       role: 'teacher'
     };
 
@@ -36,6 +39,7 @@ describe('UserService', function() {
            console.log('user1 already created!\n');
          }
          else {
+           delete testUser1.password;
            res.should.containEql(testUser1);
          }
 
@@ -51,6 +55,7 @@ describe('UserService', function() {
           console.log('user2 already created!\n');
         }
         else {
+          delete testUser2.password;
           res.should.containEql(testUser2);
         }
 
@@ -66,6 +71,7 @@ describe('UserService', function() {
           console.log('user2 already created!\n');
         }
         else {
+          delete testTeacher.password;
           res.should.containEql(testTeacher);
           testTeacher.id = res.id;
         }
@@ -102,7 +108,7 @@ describe('UserService', function() {
         }
         else {
           res.should.be.Array();
-          res.should.have.length(1)
+          res.should.have.length(1);
           res[0].should.containEql(testUser1);
           testUser1.id = res[0].id;
         }

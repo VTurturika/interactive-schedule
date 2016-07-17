@@ -8,10 +8,8 @@ module.exports = {
   */
   hashPassword: function (user) {
     if (user.password) {
-      console.log('password before: ' + user.password);
       //TODO rewrite to async style
       user.password = bcrypt.hashSync(user.password, 10);
-      console.log('password after: ' + user.password);
     }
   },
 

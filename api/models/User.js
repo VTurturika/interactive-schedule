@@ -47,7 +47,6 @@ module.exports = {
     statusConfirmed: {
       type: 'boolean',
 
-      //TODO maybe keyword this unavailable here
       defaultsTo : function() {
         return this.role == 'admin' || this.role == 'student';
       }
@@ -69,10 +68,16 @@ module.exports = {
       collection: 'lesson',
       via: 'subscribedBy'
     },
+  },
 
-    beforeUpdate: function (values, next) {
-    	JwtCipherService.hashPassword(values);
-    	next();
-    }
-  }
+  beforeCreate: function (values, next) {
+    JwtCipherService.hashPassword(values);
+    next();
+  },
+
+  beforeUpdate: function (values, next) {
+    JwtCipherService.hashPassword(values);
+     next();
+   }
+
 };
