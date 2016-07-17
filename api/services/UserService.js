@@ -19,12 +19,11 @@ module.exports = {
         });
   },
 
+  //todo must change callback params to (err, result)
   getOneUser: function (constraint, next) {
 
-      console.log("Inside getOneUser\nconstraint: " + JSON.stringify(constraint));
       User.findOne(constraint)
           .exec((err, user) => {
-            console.log("Inside findOne.exec\nerr: " + JSON.stringify(err) + "\nuser :" + JSON.stringify(user));
             if (err)
               throw err;
 

@@ -3,7 +3,7 @@
 var request = require('supertest');
 var should = require('should');
 
-describe('LessonService', function() {
+describe('LessonController', function() {
 
   let lesson1 = {
       name: 'serviceTest1Lesson',

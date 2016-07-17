@@ -159,9 +159,7 @@ module.exports = {
       }
     });
 
-  }
-
-};
+  },
 
   getOneUser: function (req, res) {
 
@@ -178,4 +176,5 @@ module.exports = {
     });
 
   }
-};
+}
+
