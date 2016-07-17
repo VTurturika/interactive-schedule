@@ -21,21 +21,14 @@ module.exports = {
 
   attributes: {
     name: {
-      type: 'text',
-      required: true,
+      type: 'string',
+      required: true
     },
     surname: {
       type: 'string',
-      required: true,
+      required: true
     },
-    role: {
-      type: 'string',
-      enum: ['admin', 'teacher', 'student'],
-      required: true,
-    },
-    socialId: {
-      type: 'string',
-    },
+    //TODO maybe need add native Waterline email validation
     email: {
       type: 'string',
       required: true,
@@ -43,15 +36,43 @@ module.exports = {
     },
     password: {
       type: 'string',
+      required: true,
+    },
+    role: {
+      type: 'string',
+      enum: ['admin', 'teacher', 'groupLeader', 'student'],
       required: true
     },
+
+    statusConfirmed: {
+      type: 'boolean',
+
+      //TODO maybe keyword this unavailable here
+      defaultsTo : function() {
+        return this.role == 'admin' || this.role == 'student';
+      }
+    },
+
+    //TODO will be changed
+    socialId: {
+      type: 'string'
+    },
+
+    //only for teachers, many teachers - many lessons
     lessons: {
       collection: 'lesson',
-      via: 'teacherId',
+      via: 'teacherId'
+    },
+
+    //for all users, many users - many lessons
+    subscribeList: {
+      collection: 'lesson',
+      via: 'subscribedBy'
+    },
+
+    beforeUpdate: function (values, next) {
+    	JwtCipherService.hashPassword(values);
+    	next();
     }
-  },
-  beforeUpdate: function (values, next) {
-    JwtCipherService.hashPassword(values);
-    next();
   }
 };

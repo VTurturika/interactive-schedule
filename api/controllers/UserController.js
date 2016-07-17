@@ -10,9 +10,9 @@
 module.exports = {
 
   /**
-   * `UserController.createUser() DEPRECATED use AuthController.login
+   * `UserController.createUser()`
    */
-  createUser: function (req, res) {
+ createUser: function (req, res) {
 
     let user = {};
 
@@ -21,14 +21,15 @@ module.exports = {
     user.role = req.body.role || undefined;
     user.socialId = req.body.socialId || undefined;
     user.email = req.body.email || undefined;
-    user.lessons = req.body.lessons || undefined;
 
-    if (user.role === 'admin' && req.body.sudo !== process.env.sudoWord) {
-      return res.forbidden();
-    }
+    UserService.createUser(user, (err, user) => {
+      if(err || !user){
+        res.badRequest('Bad request!');
+      }
+      else {
+        res.json(user);
+      }
 
-    UserService.createUser(user, user => {
-      res.json(user);
     });
   },
 
@@ -37,13 +38,18 @@ module.exports = {
    */
   destroyUser: function (req, res) {
 
-    const sudoWord = req.body.sudo || undefined;
-    if (sudoWord !== process.env.sudoWord) {
-      return res.forbidden();
+    const userId = req.body.userId || undefined;
+    if(!userId) {
+      return res.badRequest('You need to specify ID of subject to destroy');
     }
-    const userId = req.body.userId || req.body.user.id || undefined;
-    UserService.destroyUser({id: userId}, success => {
-      res.json(success);
+
+    UserService.destroyUser({id: userId}, (err, success) => {
+      if(err || !success) {
+        res.badRequest('Bad request!');
+      }
+      else {
+        res.json(success);
+      }
     });
 
   },
@@ -52,8 +58,12 @@ module.exports = {
    * `UserController.updateUser()`
    */
   updateUser: function (req, res) {
-    //TODO declarate oldId params as required, if oldId is undefined then updating all rows in db
-    let oldId = req.body.oldId || undefined;
+
+    let oldId = req.body.oldId;
+    if (!oldId) {
+      return res.badRequest('You need to specify ID of subject to change');
+    }
+
     let user = {};
 
     if (req.body.name)
@@ -66,15 +76,19 @@ module.exports = {
       user.socialId = req.body.socialId;
     if (req.body.email)
       user.email = req.body.email;
-    if (req.body.lessons)
-      user.lessons = req.body.lessons;
     if (req.body.id)
       user.id = req.body.id;
     if (req.body.createdAt)
       user.createdAt = req.body.createdAt;
 
-    UserService.updateUser(oldId, user, user => {
-      res.json(user);
+    UserService.updateUser(oldId, user, (err, updatedUser) => {
+      if(err || !updatedUser) {
+        res.badRequest();
+      }
+      else {
+        res.json(updatedUser);
+      }
+
     });
   },
 
@@ -104,10 +118,50 @@ module.exports = {
     if (req.param('updatedAt'))
       user.updatedAt = req.param('updatedAt');
 
-    UserService.getUsers(user, users => {
-      res.json(users);
+    UserService.getUsers(user, (err, users) => {
+      if(err || !users) {
+        res.badRequest('Bad request!');
+      }
+        res.json(users);
     });
   },
+
+  //only for teachers
+  assignLesson: function(req,res) {
+
+    if(!req.body.teacherId || !req.body.lessonId) {
+      res.badRequest();
+    }
+
+    UserService.assignLesson(req.body.teacherId, req.body.lessonId, (err, teacher) => {
+      if(err) {
+        res.badRequest();
+      }
+      else{
+        res.json(teacher);
+      }
+    });
+  },
+
+  //only for teachers
+  unassignLesson: function(req,res) {
+
+    if(!req.body.teacherId || !req.body.lessonId) {
+      res.badRequest();
+    }
+
+    UserService.unassignLesson(req.body.teacherId, req.body.lessonId, (err, teacher) => {
+      if(err) {
+        res.badRequest();
+      }
+      else{
+        res.json(teacher);
+      }
+    });
+
+  }
+
+};
 
   getOneUser: function (req, res) {
 
