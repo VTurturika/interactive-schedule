@@ -155,6 +155,25 @@ describe('UserService', function() {
 
   });
 
+  describe('getOneUser()', function () {
+
+    it('should return user1', function (done) {
+
+      sails.services.userservice.getOneUser({id: testUser1.id}, (err, res) => {
+
+        if(err) {
+          throw new Error('Error in UserService.getOneUser()');
+        }
+        else {
+          res.should.containEql(testUser1);
+        }
+        done();
+      })
+
+    });
+
+  });
+
   describe('updateUser()', function() {
 
     it('should update only user1', function (done) {

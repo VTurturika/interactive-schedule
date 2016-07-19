@@ -19,15 +19,16 @@ module.exports = {
         });
   },
 
-  //todo must change callback params to (err, result)
   getOneUser: function (constraint, next) {
 
       User.findOne(constraint)
           .exec((err, user) => {
-            if (err)
-              throw err;
-
-              next(user);
+            if (err) {
+              next(err, null);
+            }
+            else {
+              next(null, user)
+            }
           });
   },
 
