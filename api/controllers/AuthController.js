@@ -14,41 +14,42 @@ module.exports = {
    */
   signup: function (req, res) {
 
-		let user = {};
+    passport.authenticate('local-signup', (error, user, info) => {
 
-		user.name = req.body.name || undefined;
-    user.surname = req.body.surname || undefined;
-    user.role = req.body.role || undefined;
-    user.socialId = req.body.socialId || undefined;
-    user.email = req.body.email || undefined;
-		user.password = req.body.password || undefined;
-		user.lessons = req.body.lessons || undefined;
+      if (error) return res.serverError(error);
+      if (!user)
+        return res.unauthorized();
 
-		UserService.createUser(user, (user) => {
-			return res.json({
-				user: user,
-				jwtToken: JwtCipherService.createToken(user)
-			});
-		});
+      return res.json(user);
+
+    })(req, res);
+
   },
 
   login: function (req, res) {
 
-    //TODO add check req.body.email and req.bode.password to undefined
+    passport.authenticate('local-login', (error, user, info) => {
 
-    UserService.getOneUser({email: req.body.email}, (user) => {
+      if (error) return res.serverError(error);
+      if (!user)
+        return res.unauthorized();
 
-      if(user && JwtCipherService.comparePassword(req.body.password, user)) {
-        res.json({
-          user: user,
-          jwtToken: JwtCipherService.createToken(user)
-        })
-      }
-      else {
-        res.json({
-          msq: "Wrong email or password"
-        })
-      }
-    });
+      req.logIn(user, (err) => {
+        if(err)
+          return res.json(err);
+        else
+          return res.json(user);
+      })
+
+    })(req, res);
+
+  },
+
+  logout: function (req, res) {
+
+    req.logout();
+    res.json({msg: 'logout'});
+
   }
+
 };

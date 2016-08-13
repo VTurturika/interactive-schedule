@@ -35,14 +35,18 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
   UserController: {
-    '*': 'isAuthenticated',
+    '*': 'authenticated',
     'getUsers' : true,
     'getOneUser' : true
   },
 
   LessonController: {
-    '*': 'isAuthenticated',
+    '*': 'authenticated',
     'getLessons': true
+  },
+
+  AuthController: {
+    '*': true
   }
 
 };
