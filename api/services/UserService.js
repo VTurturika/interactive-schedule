@@ -19,7 +19,7 @@ module.exports = {
         });
   },
 
-  getOneUser: function (constraint, next) {
+  getSingleUser: function (constraint, next) {
 
       User.findOne(constraint)
           .exec((err, user) => {

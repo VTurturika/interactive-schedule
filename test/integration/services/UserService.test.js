@@ -155,14 +155,14 @@ describe('UserService', function() {
 
   });
 
-  describe('getOneUser()', function () {
+  describe('getSingleUser()', function () {
 
     it('should return user1', function (done) {
 
-      sails.services.userservice.getOneUser({id: testUser1.id}, (err, res) => {
+      sails.services.userservice.getSingleUser({id: testUser1.id}, (err, res) => {
 
         if(err) {
-          throw new Error('Error in UserService.getOneUser()');
+          throw new Error('Error in UserService.getSingleUser()');
         }
         else {
           res.should.containEql(testUser1);
@@ -171,7 +171,7 @@ describe('UserService', function() {
       })
 
     });
-
+    //todo add test for get single user by email
   });
 
   describe('updateUser()', function() {

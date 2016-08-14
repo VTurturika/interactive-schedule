@@ -19,7 +19,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(email, done) {
-  UserService.getOneUser({
+  UserService.getSingleUser({
     email: email
   }, (err, user) => {
     done(err, user)
@@ -49,7 +49,7 @@ passport.use('local-signup', new LocalStrategy({
   },
   (req, email, password, done) => { // callback with email and password from our form
 
-    UserService.getOneUser({
+    UserService.getSingleUser({
       email: email
     }, (err, user) => {
 
@@ -88,7 +88,7 @@ passport.use('local-login', new LocalStrategy({
   },
   (req, email, password, done) => {
 
-    UserService.getOneUser({
+    UserService.getSingleUser({
       email: email
     }, (err, user) => {
 

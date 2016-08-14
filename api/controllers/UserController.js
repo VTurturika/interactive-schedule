@@ -161,7 +161,7 @@ module.exports = {
 
   },
 
-  getOneUser: function (req, res) {
+  getSingleUser: function (req, res) {
 
     let user = {};
 
@@ -169,12 +169,15 @@ module.exports = {
       user.id = req.body.id;
     }
     else if(req.body.email) {
-      user.email = req.bode.id;
+      user.email = req.body.email;
     }
-    UserService.getOneUser(user, (result) => {
-      res.json({result : result});
+    UserService.getSingleUser(user, (err, result) => {
+      if(err)
+        res.badRequest();
+      else
+        res.json({result : result});
     });
 
   }
-}
+};
 
