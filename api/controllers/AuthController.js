@@ -28,11 +28,17 @@ module.exports = {
 
     UserService.createUser(user, (err, user) => {
       if(err || !user){
-        res.serverError(err);
+        return res.serverError(err);
       }
-      else {
-        res.json(user);
-      }
+
+      SessionService.startSession(user, (err, result) => {
+
+        if(err)
+          return res.serverError(err);
+
+        res.json(result);
+      })
+
 
     });
 
@@ -40,13 +46,45 @@ module.exports = {
 
   login: function (req, res) {
 
-  res.end('not implemented');
+    let user = {};
+
+    user.email = req.body.email;
+    user.password = req.body.password;
+
+    Object.keys(user).forEach((item) => {
+      if(!user[item])
+        res.badRequest(item + ' is required');
+    });
+
+    UserService.getSingleUser({email: user.email}, (err, user) => {
+
+      if(err) {
+        return res.serverError(err)
+      }
+
+      if(user && JwtService.comparePassword(req.body.password, user)) {
+
+        //todo add checking of already started sessions
+
+        SessionService.startSession(user, (err, result) => {
+
+          if(err)
+            return res.serverError(err);
+
+          res.json(result);
+        })
+      }
+      else {
+        return res.unauthorized(null, 401, 'Wrong email or password');
+      }
+
+    });
 
   },
 
   logout: function (req, res) {
 
-      res.end('not implemented')
+    JwtService.verifyRefreshToken(req.body.token, (result) => res.end(result.toString()));
   }
 
 };

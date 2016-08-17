@@ -8,6 +8,9 @@
 
 module.exports = {
 
+  autoCreatedAt: false,
+  autoUpdatedAt: false,
+
   attributes: {
 
     token: {
@@ -21,22 +24,15 @@ module.exports = {
       required: true,
     },
 
-    //in seconds
-    expiresIn: {
-      type: 'integer',
-      required: true,
-      defaultsTo: 10800 //3 hours
-    },
-
-    start: {
+    startedAt: {
       type: 'datetime',
       required: true,
-      defaultsTo: new Date().toISOString()
     },
 
-    // end: {
-    //
-    // },
+    finishedAt: {
+      type: 'datetime',
+      required: true,
+    },
 
     user: {
       model: 'user'

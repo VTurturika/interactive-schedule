@@ -77,13 +77,17 @@ module.exports = {
   },
 
   beforeCreate: function (values, next) {
-    JwtCipherService.hashPassword(values);
+    JwtService.hashPassword(values);
     next();
   },
 
   beforeUpdate: function (values, next) {
-    JwtCipherService.hashPassword(values);
-     next();
+
+    User.findOne({id: values.id}).exec((err, user) => {
+      if(user.password != values.password)
+        JwtService.hashPassword(values);
+      next();
+    })
    }
 
 };
