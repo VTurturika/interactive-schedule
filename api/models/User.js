@@ -68,6 +68,12 @@ module.exports = {
       collection: 'lesson',
       via: 'subscribedBy'
     },
+
+    //for all users, one user - many sessions
+    sessions: {
+      collection: 'session',
+      via: 'user'
+    }
   },
 
   beforeCreate: function (values, next) {

@@ -14,42 +14,18 @@ module.exports = {
    */
   signup: function (req, res) {
 
-    passport.authenticate('local-signup', (error, user, info) => {
-
-      if (error) return res.serverError(error);
-      if (!user)
-        return res.unauthorized();
-
-      return res.json(user);
-
-    })(req, res);
-
+    res.end('not implemented');
   },
 
   login: function (req, res) {
 
-    passport.authenticate('local-login', (error, user, info) => {
-
-      if (error) return res.serverError(error);
-      if (!user)
-        return res.unauthorized();
-
-      req.logIn(user, (err) => {
-        if(err)
-          return res.json(err);
-        else
-          return res.json(user);
-      })
-
-    })(req, res);
+  res.end('not implemented');
 
   },
 
   logout: function (req, res) {
 
-    req.logout();
-    res.json({msg: 'logout'});
-
+      res.end('not implemented')
   }
 
 };

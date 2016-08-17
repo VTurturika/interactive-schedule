@@ -10,6 +10,12 @@
  */
 module.exports.globals = {
 
+  JWT_SECRET : process.env.JWT_SECRET || 'JWT_SECRET',
+
+  OAUTH2_CLIENT_ID : process.env.OAUTH2_CLIENT_ID || 'OAUTH2_CLIENT_ID',
+
+  OAUTH2_CLIENT_SECRET : process.env.OAUTH2_CLIENT_SECRET || 'OAUTH2_CLIENT_SECRET'
+  
   /****************************************************************************
   *                                                                           *
   * Expose the lodash installed in Sails core as a global variable. If this   *

@@ -34,7 +34,9 @@ module.exports.policies = {
   * and its actions                                                          *
   *                                                                          *
   ***************************************************************************/
-  UserController: {
+
+
+  /* UserController: {
     '*': 'authenticated',
     'getUsers' : true,
     'getSingleUser' : true
@@ -44,9 +46,11 @@ module.exports.policies = {
     '*': 'authenticated',
     'getLessons': true
   },
-
+*/
   AuthController: {
-    '*': true
+    '*': true,
+    'signup': 'hasValidCredentials',
+    'login': 'hasValidCredentials'
   }
 
 };

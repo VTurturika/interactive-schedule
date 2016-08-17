@@ -1,120 +1,68 @@
 'use strict';
 
-var passport = require('passport'),
-  JwtStrategy = require('passport-jwt').Strategy,
-  ExtractJwt = require('passport-jwt').ExtractJwt,
-  LocalStrategy = require('passport-local').Strategy;
-
-//TODO maybe should declare constants in /env/prodaction.js
-const SECRET = process.env.tokenSecret || "superSecret";
-
-const JWT_STRATEGY_CONFIG = {
-  secretOrKey: SECRET,
-  jwtFromRequest: ExtractJwt.fromAuthHeader(),
-  ignoreExpiration: true
-};
-
-passport.serializeUser(function(user, done) {
-  done(null, user.email);
-});
-
-passport.deserializeUser(function(email, done) {
-  UserService.getSingleUser({
-    email: email
-  }, (err, user) => {
-    done(err, user)
-  })
-});
-
-
-passport.use(new JwtStrategy(JWT_STRATEGY_CONFIG, function (jwt_payload, done) {
-
-  User.findOne({id: jwt_payload.id}, function (err, user) {
-    if (err) {
-      return done(err, false);
-    }
-    if (user) {
-      done(null, user);
-    } else {
-      done(null, false);
-    }
-  });
-}));
-
-
-passport.use('local-signup', new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true // allows us to pass back the entire request to the callback
-  },
-  (req, email, password, done) => { // callback with email and password from our form
-
-    UserService.getSingleUser({
-      email: email
-    }, (err, user) => {
-
-      if (err)
-        return done(err);
-
-      if (user) {
-        return done(null, false);
-      }
-      else {
-
-        UserService.createUser({
-          name: "testName",
-          surname: "testSurname",
-          role: "student",
-          email: email,
-          password: password
-        }, (err, user) => {
-
-          if (err)
-            return done(err);
-          else
-            return done(null, user)
-        });
-
-      }
-    });
-
-  }));
-
-passport.use('local-login', new LocalStrategy({
-    // by default, local strategy uses username and password, we will override with email
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true
-  },
-  (req, email, password, done) => {
-
-    UserService.getSingleUser({
-      email: email
-    }, (err, user) => {
-
-      if (err)
-        return done(err);
-
-      if (!user) {
-        return done(null, false, 'user not found');
-      }
-
-      if (!JwtCipherService.comparePassword(password, user)) {
-        return done(null, false, 'wrong password')
-      }
-
-      return done(null, user)
-
-    });
-
-  }));
+var passport = require('passport');
 
 module.exports = {
-  jwtSecret: SECRET,
-  express: {
+  http: {
     customMiddleware: (app) => {
+
       app.use(passport.initialize());
-      app.use(passport.session());
+
+      let JwtStrategy = require('passport-jwt').Strategy,
+          ExtractJwt = require('passport-jwt').ExtractJwt;
+
+      let OAuth2ClientStrategy = require('passport-oauth2-client-password');
+
+      const JWT_SECRET =  sails.config.globals.JWT_SECRET,
+            OAUTH2_CLIENT_ID = sails.config.globals.OAUTH2_CLIENT_ID,
+            OAUTH2_CLIENT_SECRET = sails.config.globals.OAUTH2_CLIENT_SECRET;
+
+      const JWT_STRATEGY_CONFIG = {
+        secretOrKey: JWT_SECRET,
+        jwtFromRequest: ExtractJwt.fromAuthHeader(),
+        ignoreExpiration: false
+      };
+
+      passport.use(new JwtStrategy(JWT_STRATEGY_CONFIG,(jwt_payload, done) => {
+
+        User.findOne({id: jwt_payload.id}, function (err, user) {
+          if (err) {
+            return done(err, false);
+          }
+          if (user) {
+            done(null, user);
+          } else {
+            done(null, false);
+          }
+        });
+      }));
+
+
+      passport.use(new OAuth2ClientStrategy((clientId, clientSecret, done) => {
+
+        if(clientId != OAUTH2_CLIENT_ID) {
+
+          done(null, {confirmed : false}, {
+            message: 'wrong clientId',
+            code: 401
+          })
+        }
+
+        if(clientSecret != OAUTH2_CLIENT_SECRET) {
+
+          done(null, {confirmed : false}, {
+            message: 'wrong clientSecret',
+            code: 401
+          })
+        }
+
+        done(null, {confirmed : true}, {
+          message: 'credentials confirmed',
+          code: 200
+        });
+
+      }));
+
     }
   }
 };
