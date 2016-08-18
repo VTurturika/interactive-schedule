@@ -13,10 +13,13 @@ module.exports.globals = {
   JWT_SECRET: process.env.JWT_SECRET || 'JWT_SECRET',
 
   OAUTH2_CLIENT_ID: process.env.OAUTH2_CLIENT_ID || 'OAUTH2_CLIENT_ID',
-
   OAUTH2_CLIENT_SECRET: process.env.OAUTH2_CLIENT_SECRET || 'OAUTH2_CLIENT_SECRET',
 
-  SESSION_EXPIRATION_TIME: process.env.SESSION_EXPIRATION_TIME || 1800 // todo must be changed
+  SESSION_EXPIRATION_TIME: process.env.SESSION_EXPIRATION_TIME || 1800, // todo must be changed
+
+  FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID || 'FACEBOOK_CLIENT_ID',
+  FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET || 'FACEBOOK_CLIENT_SECRET',
+  FACEBOOK_CALLBACK: 'http://localhost:1337/auth/facebook/callback'
 
   /****************************************************************************
   *                                                                           *

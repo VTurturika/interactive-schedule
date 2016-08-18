@@ -20,6 +20,7 @@ module.exports = {
   autoUpdatedAt: true,
 
   attributes: {
+
     name: {
       type: 'string',
       required: true
@@ -31,12 +32,10 @@ module.exports = {
     //TODO maybe need add native Waterline email validation
     email: {
       type: 'string',
-      required: true,
       unique: true
     },
     password: {
       type: 'string',
-      required: true,
     },
     role: {
       type: 'string',
@@ -52,8 +51,11 @@ module.exports = {
       }
     },
 
-    //TODO will be changed
-    socialId: {
+    facebookId: {
+      type: 'string'
+    },
+
+    facebookToken: {
       type: 'string'
     },
 
