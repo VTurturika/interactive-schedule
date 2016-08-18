@@ -177,7 +177,18 @@ module.exports = {
       else
         res.json({result : result});
     });
+  },
 
+
+  updateGroupLeaderStatus: function(req, res) {
+
+    UserService.updateStatus(req, res);
+  },
+
+  updateTeacherStatus: function(req, res) {
+
+    UserService.updateStatus(req, res);
   }
+
 };
 

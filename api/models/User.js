@@ -48,7 +48,7 @@ module.exports = {
       type: 'boolean',
 
       defaultsTo : function() {
-        return this.role == 'admin' || this.role == 'student';
+        return this.role == 'student';
       }
     },
 

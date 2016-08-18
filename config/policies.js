@@ -20,33 +20,39 @@
 module.exports.policies = {
 
   /***************************************************************************
-  *                                                                          *
-  * Default policy for all controllers and actions (`true` allows public     *
-  * access)                                                                  *
-  *                                                                          *
-  ***************************************************************************/
+   *                                                                          *
+   * Default policy for all controllers and actions (`true` allows public     *
+   * access)                                                                  *
+   *                                                                          *
+   ***************************************************************************/
 
-   '*': true,
+  '*': true,
 
   /***************************************************************************
-  *                                                                          *
-  * Here's an example of mapping some policies to run before a controller    *
-  * and its actions                                                          *
-  *                                                                          *
-  ***************************************************************************/
+   *                                                                          *
+   * Here's an example of mapping some policies to run before a controller    *
+   * and its actions                                                          *
+   *                                                                          *
+   ***************************************************************************/
 
 
-   UserController: {
-    '*': 'isAuthorized'
+  UserController: {
+    '*': 'isAuthorized',
+    'getUsers': ['isAuthorized', 'isGroupLeader'],
+    'updateGroupLeaderStatus': ['isAuthorized', 'isTeacher'],
+    'updateTeacherStatus': ['isAuthorized', 'isAdmin'],
   },
 
   LessonController: {
-    '*': 'isAuthorized',
-    'getLessons': true
+    '*': true,
+    'getLessons': true,
+    'createLesson': ['isAuthorized', 'isTeacher'],
+    'updateLesson': ['isAuthorized', 'isGroupLeader'],
+    'destroyLesson': ['isAuthorized', 'isTeacher']
   },
 
   AuthController: {
-    '*': false,
+    '*': true,
     'signup': 'isAuthenticated',
     'login': 'isAuthenticated',
     'logout': 'isAuthorized',

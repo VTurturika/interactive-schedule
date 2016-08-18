@@ -16,7 +16,7 @@ module.exports.globals = {
 
   OAUTH2_CLIENT_SECRET: process.env.OAUTH2_CLIENT_SECRET || 'OAUTH2_CLIENT_SECRET',
 
-  SESSION_EXPIRATION_TIME: process.env.SESSION_EXPIRATION_TIME || 180 // todo must be changed
+  SESSION_EXPIRATION_TIME: process.env.SESSION_EXPIRATION_TIME || 1800 // todo must be changed
 
   /****************************************************************************
   *                                                                           *
