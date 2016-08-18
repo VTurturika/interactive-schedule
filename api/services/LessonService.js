@@ -2,8 +2,6 @@
 
 module.exports = {
 
-  //TODO must be tested with new Lessons definition
-
   getLessons: function (constraints, next) {
     Lesson.find(constraints)
           .populate('teacherId')

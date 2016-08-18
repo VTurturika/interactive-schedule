@@ -10,6 +10,25 @@
  */
 module.exports.globals = {
 
+  JWT_SECRET: process.env.JWT_SECRET || 'JWT_SECRET',
+
+  OAUTH2_CLIENT_ID: process.env.OAUTH2_CLIENT_ID || 'OAUTH2_CLIENT_ID',
+  OAUTH2_CLIENT_SECRET: process.env.OAUTH2_CLIENT_SECRET || 'OAUTH2_CLIENT_SECRET',
+
+  SESSION_EXPIRATION_TIME: process.env.SESSION_EXPIRATION_TIME || 10800, // 3 hours
+
+  FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID || 'FACEBOOK_CLIENT_ID',
+  FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET || 'FACEBOOK_CLIENT_SECRET',
+  FACEBOOK_CALLBACK: 'http://localhost:1337/auth/facebook/callback',
+
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || 'GOOGLE_CLIENT_ID',
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || 'GOOGLE_CLIENT_SECRET',
+  GOOGLE_CALLBACK: 'http://localhost:1337/auth/google/callback',
+
+  VK_CLIENT_ID: process.env.VK_CLIENT_ID || 'VK_CLIENT_ID',
+  VK_CLIENT_SECRET: process.env.VK_CLIENT_SECRET || 'VK_CLIENT_SECRET',
+  VK_CALLBACK: 'http://localhost:1337/auth/vk/callback'
+
   /****************************************************************************
   *                                                                           *
   * Expose the lodash installed in Sails core as a global variable. If this   *

@@ -12,7 +12,7 @@ module.exports = {
   /**
    * `UserController.createUser()`
    */
-  createUser: function (req, res) {
+ createUser: function (req, res) {
 
     let user = {};
 
@@ -159,6 +159,35 @@ module.exports = {
       }
     });
 
+  },
+
+  getSingleUser: function (req, res) {
+
+    let user = {};
+
+    if(req.body.id) {
+      user.id = req.body.id;
+    }
+    else if(req.body.email) {
+      user.email = req.body.email;
+    }
+    UserService.getSingleUser(user, (err, result) => {
+      if(err)
+        res.badRequest();
+      else
+        res.json({result : result});
+    });
+  },
+
+
+  updateGroupLeaderStatus: function(req, res) {
+
+    UserService.updateStatus(req, res);
+  },
+
+  updateTeacherStatus: function(req, res) {
+
+    UserService.updateStatus(req, res);
   }
 
 };

@@ -147,6 +147,7 @@ describe('LessonService', function() {
       name: 'subscriberName',
       surname: 'subscriberSurname',
       email: 'subscriber@email.com',
+      password: 'password',
       role: 'student'
     };
 
@@ -154,10 +155,10 @@ describe('LessonService', function() {
 
       sails.services.userservice.createUser(testSubscriber, (err, res) => {
         if(err) {
-          err.should.be.Error();
-          console.log('testSubscriber already created!\n');
+          throw new Error('Error in UserService.createUser()');
         }
         else {
+          delete testSubscriber.password;
           res.should.containEql(testSubscriber);
           testSubscriber.id = res.id;
         }

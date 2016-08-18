@@ -20,6 +20,7 @@ module.exports = {
   autoUpdatedAt: true,
 
   attributes: {
+
     name: {
       type: 'string',
       required: true
@@ -31,13 +32,10 @@ module.exports = {
     //TODO maybe need add native Waterline email validation
     email: {
       type: 'string',
-      required: true,
       unique: true
     },
     password: {
       type: 'string',
-      required: true,
-      defaultsTo: 'password' //TODO will be changed after merging with auth-dev
     },
     role: {
       type: 'string',
@@ -48,14 +46,32 @@ module.exports = {
     statusConfirmed: {
       type: 'boolean',
 
-      //TODO maybe keyword this unavailable here
       defaultsTo : function() {
-        return this.role == 'admin' || this.role == 'student';
+        return this.role == 'student';
       }
     },
 
-    //TODO will be changed
-    socialId: {
+    facebookId: {
+      type: 'string'
+    },
+
+    facebookToken: {
+      type: 'string'
+    },
+
+    googleId: {
+      type: 'string'
+    },
+
+    googleToken: {
+      type: 'string'
+    },
+
+    vkId: {
+      type: 'string'
+    },
+
+    vkToken: {
       type: 'string'
     },
 
@@ -69,6 +85,27 @@ module.exports = {
     subscribeList: {
       collection: 'lesson',
       via: 'subscribedBy'
+    },
+
+    //for all users, one user - many sessions
+    sessions: {
+      collection: 'session',
+      via: 'user'
     }
-  }
+  },
+
+  beforeCreate: function (values, next) {
+    JwtService.hashPassword(values);
+    next();
+  },
+
+  beforeUpdate: function (values, next) {
+
+    User.findOne({id: values.id}).exec((err, user) => {
+      if(user.password != values.password)
+        JwtService.hashPassword(values);
+      next();
+    })
+   }
+
 };
