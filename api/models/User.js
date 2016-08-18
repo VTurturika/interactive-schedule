@@ -59,6 +59,14 @@ module.exports = {
       type: 'string'
     },
 
+    googleId: {
+      type: 'string'
+    },
+
+    googleToken: {
+      type: 'string'
+    },
+
     //only for teachers, many teachers - many lessons
     lessons: {
       collection: 'lesson',

@@ -1,14 +1,25 @@
 'use strict';
 
+let passport = require('passport');
+
 module.exports = {
 
   login: function (req, res) {
 
-    res.end('google login');
+    passport.authenticate('google', {scope: ['email']})(req, res);
+
   },
 
   callback: function(req, res) {
 
-    res.end('google callback')
+    passport.authenticate('google', (error, result, info) => {
+
+      res.json({
+        error: error,
+        result: result,
+        info: info
+      })
+
+    })(req, res);
   }
 };

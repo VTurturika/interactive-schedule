@@ -8,19 +8,9 @@ module.exports = {
 
       app.use(passport.initialize());
 
-      let JwtStrategy = require('passport-jwt').Strategy,
-          ExtractJwt = require('passport-jwt').ExtractJwt;
-
-      let OAuth2ClientStrategy = require('passport-oauth2-client-password').Strategy;
-      let FacebookStrategy = require('passport-facebook').Strategy;
-
-      const JWT_SECRET = sails.config.globals.JWT_SECRET,
-            OAUTH2_CLIENT_ID = sails.config.globals.OAUTH2_CLIENT_ID,
-            OAUTH2_CLIENT_SECRET = sails.config.globals.OAUTH2_CLIENT_SECRET;
-
-      const FACEBOOK_CLIENT_ID = sails.config.globals.FACEBOOK_CLIENT_ID,
-            FACEBOOK_CLIENT_SECRET = sails.config.globals.FACEBOOK_CLIENT_SECRET,
-            FACEBOOK_CALLBACK = sails.config.globals.FACEBOOK_CALLBACK;
+      let   JwtStrategy = require('passport-jwt').Strategy,
+            ExtractJwt = require('passport-jwt').ExtractJwt;
+      const JWT_SECRET = sails.config.globals.JWT_SECRET;
 
       passport.use(new JwtStrategy({
 
@@ -52,6 +42,9 @@ module.exports = {
         });
       }));
 
+      let   OAuth2ClientStrategy = require('passport-oauth2-client-password').Strategy;
+      const OAUTH2_CLIENT_ID = sails.config.globals.OAUTH2_CLIENT_ID,
+            OAUTH2_CLIENT_SECRET = sails.config.globals.OAUTH2_CLIENT_SECRET;
 
       passport.use(new OAuth2ClientStrategy((clientId, clientSecret, done) => {
 
@@ -77,6 +70,11 @@ module.exports = {
         });
 
       }));
+
+      let   FacebookStrategy = require('passport-facebook').Strategy;
+      const FACEBOOK_CLIENT_ID = sails.config.globals.FACEBOOK_CLIENT_ID,
+            FACEBOOK_CLIENT_SECRET = sails.config.globals.FACEBOOK_CLIENT_SECRET,
+            FACEBOOK_CALLBACK = sails.config.globals.FACEBOOK_CALLBACK;
 
       passport.use(new FacebookStrategy({
 
@@ -134,7 +132,69 @@ module.exports = {
           done(null, false, {case: 'profile or token are empty'})
         }
 
-      }))
+      }));
+
+      let   GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+      const GOOGLE_CLIENT_ID = sails.config.globals.GOOGLE_CLIENT_ID,
+            GOOGLE_CLIENT_SECRET = sails.config.globals.GOOGLE_CLIENT_SECRET,
+            GOOGLE_CALLBACK = sails.config.globals.GOOGLE_CALLBACK;
+
+      passport.use(new GoogleStrategy({
+
+        clientID: GOOGLE_CLIENT_ID,
+        clientSecret: GOOGLE_CLIENT_SECRET,
+        callbackURL: GOOGLE_CALLBACK,
+        passReqToCallback: true
+
+      }, (req, token, refreshToken, profile, done) => {
+
+        if(profile && token) {
+          UserService.getSingleUser({googleId: profile.id}, (err, user) => {
+
+            if(err)
+              return done(err, false);
+
+            if(!user) { //create new user and start session
+
+              let user = {
+                name: profile.name.givenName,
+                surname: profile.name.familyName,
+                role: 'student',
+                googleId: profile.id,
+                googleToken: token
+              };
+
+              UserService.createUser(user, (err, createdUser) => {
+
+                if(err)
+                  return done(err, false);
+
+                SessionService.startSession(createdUser, (err, sessionInfo) => {
+
+                  if(err)
+                    return done(err, false);
+
+                  done(null, sessionInfo)
+                })
+              })
+            }
+            else { //user already exist, just start session
+
+              SessionService.startSession(user, (err, sessionInfo) => {
+
+                if(err)
+                  return done(err, false);
+
+                done(null, sessionInfo)
+              })
+            }
+          })
+        }
+        else {
+          done(null, false, {case: 'profile or token are empty'})
+        }
+
+      }));
 
     }
   }
