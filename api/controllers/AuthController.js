@@ -62,8 +62,6 @@ module.exports = {
       }
       if(user && JwtService.comparePassword(req.body.password, user)) {
 
-        //todo add checking of already started sessions
-
         SessionService.startSession(user, (err, result) => {
 
           if(err)
@@ -101,6 +99,33 @@ module.exports = {
         })
       }
     });
+  },
+
+  refresh: function(req, res) {
+
+    let refreshToken =  req.body.refreshToken || undefined;
+
+    if(!refreshToken) {
+      res.badRequest({
+        code: 400,
+        message: 'refreshToken is required'
+      })
+    }
+    else {
+
+      SessionService.refreshSession(refreshToken, (err, result, data) => {
+
+        if(err) return res.serverError({
+          code: 500,
+          message: err.message
+        });
+
+        if(!result) return res.unauthorized(data);
+
+        res.json(data);
+      })
+    }
+
   }
 
 };

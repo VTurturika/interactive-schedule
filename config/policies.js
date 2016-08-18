@@ -49,7 +49,8 @@ module.exports.policies = {
     '*': false,
     'signup': 'isAuthenticated',
     'login': 'isAuthenticated',
-    'logout': 'isAuthorized'
+    'logout': 'isAuthorized',
+    'refresh': 'isAuthenticated'
   }
 
 };
