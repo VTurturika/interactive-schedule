@@ -1,3 +1,2 @@
-# webapi
+# KSPU Interactive Schedule
 
-a [Sails](http://sailsjs.org) application
