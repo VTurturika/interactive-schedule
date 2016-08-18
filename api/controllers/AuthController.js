@@ -39,7 +39,6 @@ module.exports = {
         res.json(result);
       })
 
-
     });
 
   },
@@ -61,7 +60,6 @@ module.exports = {
       if(err) {
         return res.serverError(err)
       }
-
       if(user && JwtService.comparePassword(req.body.password, user)) {
 
         //todo add checking of already started sessions
@@ -84,7 +82,25 @@ module.exports = {
 
   logout: function (req, res) {
 
-    JwtService.verifyRefreshToken(req.body.token, (result) => res.end(result.toString()));
+    let token = JwtService.extractToken(req);
+
+    SessionService.closeSession(token, (err, session) => {
+
+      if(err) {
+
+        return res.serverError({
+          code: 500,
+          message: err.message
+        })
+      }
+      else {
+
+        res.json({
+          message: 'Session closed',
+          session: session
+        })
+      }
+    });
   }
 
 };

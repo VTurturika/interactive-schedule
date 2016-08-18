@@ -20,19 +20,29 @@ module.exports = {
       const JWT_STRATEGY_CONFIG = {
         secretOrKey: JWT_SECRET,
         jwtFromRequest: ExtractJwt.fromAuthHeader(),
-        ignoreExpiration: false
+        ignoreExpiration: false,
+        passReqToCallback: true
       };
 
-      passport.use(new JwtStrategy(JWT_STRATEGY_CONFIG,(jwt_payload, done) => {
+      passport.use(new JwtStrategy(JWT_STRATEGY_CONFIG,(req, payload, done) => {
 
-        User.findOne({id: jwt_payload.id}, function (err, user) {
-          if (err) {
-            return done(err, false);
+        let token = JwtService.extractToken(req);
+
+        SessionService.getSession(token, (err, session) => {
+
+          if(err) {
+            done(err, false);
           }
-          if (user) {
-            done(null, user);
-          } else {
-            done(null, false);
+          if(!session) {
+            done(null,false, {
+              message: 'Wrong token'
+            });
+          }
+          else {
+            done(null, session, {
+              message: 'Token confirmed',
+              code: 200,
+            })
           }
         });
       }));
@@ -43,7 +53,7 @@ module.exports = {
         if(clientId != OAUTH2_CLIENT_ID) {
 
           done(null, {confirmed : false}, {
-            message: 'wrong clientId',
+            message: 'Wrong clientId',
             code: 401
           })
         }
@@ -51,13 +61,13 @@ module.exports = {
         if(clientSecret != OAUTH2_CLIENT_SECRET) {
 
           done(null, {confirmed : false}, {
-            message: 'wrong clientSecret',
+            message: 'Wrong clientSecret',
             code: 401
           })
         }
 
         done(null, {confirmed : true}, {
-          message: 'credentials confirmed',
+          message: 'Credentials confirmed',
           code: 200
         });
 
