@@ -196,6 +196,68 @@ module.exports = {
 
       }));
 
+      let   VkStrategy = require('passport-vkontakte').Strategy;
+      const VK_CLIENT_ID = sails.config.globals.VK_CLIENT_ID,
+            VK_CLIENT_SECRET = sails.config.globals.VK_CLIENT_SECRET,
+            VK_CALLBACK = sails.config.globals.VK_CALLBACK;
+
+      passport.use(new VkStrategy({
+
+        clientID: VK_CLIENT_ID,
+        clientSecret: VK_CLIENT_SECRET,
+        callbackURL: VK_CALLBACK,
+        passReqToCallback: true
+
+      }, (req, token, refreshToken, params, profile, done) => {
+
+        if(profile && token) {
+          UserService.getSingleUser({vkId: profile.id}, (err, user) => {
+
+            if(err)
+              return done(err, false);
+
+            if(!user) { //create new user and start session
+
+              let user = {
+                name: profile.name.givenName,
+                surname: profile.name.familyName,
+                role: 'student',
+                vkId: profile.id,
+                vkToken: token
+              };
+
+              UserService.createUser(user, (err, createdUser) => {
+
+                if(err)
+                  return done(err, false);
+
+                SessionService.startSession(createdUser, (err, sessionInfo) => {
+
+                  if(err)
+                    return done(err, false);
+
+                  done(null, sessionInfo)
+                })
+              })
+            }
+            else { //user already exist, just start session
+
+              SessionService.startSession(user, (err, sessionInfo) => {
+
+                if(err)
+                  return done(err, false);
+
+                done(null, sessionInfo)
+              })
+            }
+          })
+        }
+        else {
+          done(null, false, {case: 'profile or token are empty'})
+        }
+
+      }));
+
     }
   }
 };

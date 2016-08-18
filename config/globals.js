@@ -15,7 +15,7 @@ module.exports.globals = {
   OAUTH2_CLIENT_ID: process.env.OAUTH2_CLIENT_ID || 'OAUTH2_CLIENT_ID',
   OAUTH2_CLIENT_SECRET: process.env.OAUTH2_CLIENT_SECRET || 'OAUTH2_CLIENT_SECRET',
 
-  SESSION_EXPIRATION_TIME: process.env.SESSION_EXPIRATION_TIME || 1800, // todo must be changed
+  SESSION_EXPIRATION_TIME: process.env.SESSION_EXPIRATION_TIME || 10800, // 3 hours
 
   FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID || 'FACEBOOK_CLIENT_ID',
   FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET || 'FACEBOOK_CLIENT_SECRET',
@@ -23,7 +23,11 @@ module.exports.globals = {
 
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || 'GOOGLE_CLIENT_ID',
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || 'GOOGLE_CLIENT_SECRET',
-  GOOGLE_CALLBACK: 'http://localhost:1337/auth/google/callback'
+  GOOGLE_CALLBACK: 'http://localhost:1337/auth/google/callback',
+
+  VK_CLIENT_ID: process.env.VK_CLIENT_ID || 'VK_CLIENT_ID',
+  VK_CLIENT_SECRET: process.env.VK_CLIENT_SECRET || 'VK_CLIENT_SECRET',
+  VK_CALLBACK: 'http://localhost:1337/auth/vk/callback'
 
   /****************************************************************************
   *                                                                           *

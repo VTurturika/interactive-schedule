@@ -67,6 +67,14 @@ module.exports = {
       type: 'string'
     },
 
+    vkId: {
+      type: 'string'
+    },
+
+    vkToken: {
+      type: 'string'
+    },
+
     //only for teachers, many teachers - many lessons
     lessons: {
       collection: 'lesson',
