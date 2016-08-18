@@ -8,6 +8,10 @@
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.globals.html
  */
+
+var endpoint = process.env.DEPLOY ? 'https://kspu-schedule.herokuapp.com/'
+                                  :  'http://localhost:1337/';
+
 module.exports.globals = {
 
   JWT_SECRET: process.env.JWT_SECRET || 'JWT_SECRET',
@@ -19,15 +23,15 @@ module.exports.globals = {
 
   FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID || 'FACEBOOK_CLIENT_ID',
   FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET || 'FACEBOOK_CLIENT_SECRET',
-  FACEBOOK_CALLBACK: 'http://localhost:1337/auth/facebook/callback',
+  FACEBOOK_CALLBACK: endpoint + 'auth/facebook/callback',
 
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || 'GOOGLE_CLIENT_ID',
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || 'GOOGLE_CLIENT_SECRET',
-  GOOGLE_CALLBACK: 'http://localhost:1337/auth/google/callback',
+  GOOGLE_CALLBACK: endpoint + 'auth/google/callback',
 
   VK_CLIENT_ID: process.env.VK_CLIENT_ID || 'VK_CLIENT_ID',
   VK_CLIENT_SECRET: process.env.VK_CLIENT_SECRET || 'VK_CLIENT_SECRET',
-  VK_CALLBACK: 'http://localhost:1337/auth/vk/callback'
+  VK_CALLBACK: endpoint + 'auth/vk/callback'
 
   /****************************************************************************
   *                                                                           *
